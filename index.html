@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タイピングゲーム ポータル</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { font-size: 2.4rem; margin-bottom: 10px; }
+    p.lead { font-size: 1.1rem; margin-bottom: 40px; opacity: 0.9; }
+    .cards { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      display: block;
+      width: 220px;
+      padding: 40px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 14px 32px rgba(0,0,0,0.4); }
+    .card .emoji { display: block; font-size: 3rem; margin-bottom: 12px; }
+    .card.blue { background: linear-gradient(135deg, #2196f3, #0d47a1); }
+    .card.green { background: linear-gradient(135deg, #43a047, #1b5e20); }
+    footer { margin-top: 50px; font-size: 0.85rem; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <h1>⌨️ タイピングゲーム</h1>
+  <p class="lead">職場体験 制作コンテンツ / 遊びたいゲームを選んでね</p>
+  <div class="cards">
+    <a class="card blue" href="./blue/">
+      <span class="emoji">🔵</span>
+      Blue版
+    </a>
+    <a class="card green" href="./green/">
+      <span class="emoji">🟢</span>
+      Green版
+    </a>
+  </div>
+  <footer>Made with HTML / CSS / JavaScript</footer>
+</body>
+</html>
