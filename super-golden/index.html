@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>✨ SUPER GOLDEN タイピング ✨</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- 背景でキラキラ流れる粒 -->
+  <div id="sparkles" class="sparkles"></div>
+  <!-- 花吹雪・絵文字バーストがここに出る -->
+  <div id="fx" class="fx-layer"></div>
+
+  <div class="stage">
+    <h1 class="title">✨ SUPER GOLDEN タイピング ✨</h1>
+
+    <!-- スコアなどの表示（HUD） -->
+    <div class="hud">
+      <div class="hud-item">
+        <span class="hud-label">スコア</span>
+        <span id="score" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">のこり</span>
+        <span id="time" class="hud-value">40</span>
+      </div>
+      <div class="hud-item combo-box">
+        <span class="hud-label">コンボ</span>
+        <span id="combo" class="hud-value">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">クリア</span>
+        <span id="cleared" class="hud-value">0</span>
+      </div>
+    </div>
+
+    <!-- 育つ木の庭 -->
+    <div class="garden">
+      <div id="flowers" class="flowers"></div>
+      <div id="tree" class="tree">🌱</div>
+      <div class="ground"></div>
+    </div>
+
+    <!-- お題 -->
+    <div id="word" class="word">スタートを おそう！</div>
+    <div id="typed" class="typed"></div>
+
+    <!-- ボタン類 -->
+    <div class="controls">
+      <button id="startBtn" class="start-btn">🚀 スタート</button>
+      <button id="muteBtn" class="mute-btn" title="音のオン・オフ">🔊</button>
+    </div>
+
+    <p class="hint">キーボードでお題の単語を打とう！ 正解するほど木が育つよ 🌳</p>
+  </div>
+
+  <!-- 結果オーバーレイ -->
+  <div id="overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <div class="overlay-emoji">🏆</div>
+      <h2 id="overlayTitle">おつかれさま！</h2>
+      <p id="overlayScore" class="overlay-score"></p>
+      <p id="overlayMsg" class="overlay-msg"></p>
+      <button id="againBtn" class="start-btn">🔄 もういちど</button>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
