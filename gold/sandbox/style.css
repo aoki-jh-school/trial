@@ -1,0 +1,121 @@
+/* ===== JavaScript サンドボックス スタイル ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+  background: #f4f6fb;
+  color: #222;
+  padding: 24px 16px 60px;
+  line-height: 1.6;
+}
+
+.header {
+  max-width: 760px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+.header h1 { font-size: 1.9rem; margin-bottom: 12px; }
+.header .lead { font-size: 1rem; color: #444; }
+.header .note {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  background: #fff8dc;
+  border: 1px solid #f0e0a0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: inline-block;
+}
+code {
+  background: #eaeef5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+}
+
+.lessons {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 1つのレッスンカード */
+.card {
+  background: #fff;
+  border: 1px solid #e2e6ee;
+  border-radius: 16px;
+  padding: 22px 22px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+.card h2 {
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+.card .desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+/* コードを書くところ */
+.editor {
+  width: 100%;
+  min-height: 120px;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 14px;
+  border: 1px solid #d3d9e4;
+  border-radius: 10px;
+  background: #1e222a;
+  color: #e6e6e6;
+  resize: vertical;
+  tab-size: 2;
+}
+.editor:focus { outline: 2px solid #4a90e2; }
+
+/* ボタンの行 */
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+button {
+  font-size: 0.95rem;
+  font-weight: bold;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.12s;
+}
+button:hover { transform: scale(1.04); }
+.run-btn { background: #2e7d32; color: #fff; }
+.clear-btn { background: #e0e4ec; color: #333; }
+
+/* 実行結果の表示エリア */
+.output {
+  margin-top: 14px;
+  min-height: 44px;
+  background: #0f1115;
+  color: #a8e6a3;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+.output .placeholder { color: #66707d; }
+.output .err { color: #ff6b6b; }
+.output .line { display: block; }
+
+.back {
+  max-width: 760px;
+  margin: 34px auto 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.back a { color: #2e7d32; }

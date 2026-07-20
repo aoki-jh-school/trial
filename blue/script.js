@@ -39,7 +39,7 @@ let playing = false;
 
 // ▼ 新しいお題を出す
 function nextWord() {
-  const index = Math.floor(Math.random() * words.length);
+  const index = Math.floor(Math.random() * 1);
   currentWord = words[index];
   position = 0;
   renderWord();
@@ -70,7 +70,7 @@ function startGame() {
 
   // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
-    timeLeft--;
+    timeLeft++;
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       endGame();
@@ -101,14 +101,13 @@ document.addEventListener("keydown", (e) => {
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-      score += 10;
+      score -= 10;
       scoreEl.textContent = score;
       nextWord();
     }
   } else {
     // ミス
     miss++;
-    missEl.textContent = miss;
   }
 });
 

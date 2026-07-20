@@ -1,9 +1,9 @@
-/* ===== Blue版 スタイル ===== */
-/* 色を変えたいときは下の --main-color などをいじってみよう！ */
+/* ===== Gold版（お手本）スタイル ===== */
+/* このファイルが「正解」の状態です。blue/green のバグ探しの答え合わせに使ってね。 */
 :root {
-  --main-color: #2196f3;
-  --dark-color: #0d47a1;
-  --accent-color: #ffeb3b;
+  --main-color: #f9a825;
+  --dark-color: #e65100;
+  --accent-color: #fff8e1;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,7 +60,7 @@ h1 { font-size: 1.8rem; margin-bottom: 24px; }
   word-break: break-all;
 }
 /* 正しく打てた文字の色 */
-.word .done { color: inherit; }
+.word .done { color: var(--accent-color); }
 
 /* 入力中の文字 */
 .typed {

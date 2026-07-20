@@ -1,4 +1,4 @@
-// ===== Green版 タイピングゲーム =====
+// ===== Blue版 タイピングゲーム =====
 // このファイルを書きかえて、自分だけのゲームを作ってみよう！
 
 // ▼ お題になる単語リスト（ここに好きな単語を追加してみよう！）
@@ -47,8 +47,8 @@ function nextWord() {
 
 // ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
-  const done = currentWord.slice(position);
-  const rest = currentWord.slice(0, position);
+  const done = currentWord.slice(0, position);
+  const rest = currentWord.slice(position);
   wordEl.innerHTML = `<span class="done">${done}</span>${rest}`;
   typedEl.textContent = done;
 }
@@ -75,7 +75,7 @@ function startGame() {
     if (timeLeft <= 0) {
       endGame();
     }
-  }, 100);
+  }, 1000);
 }
 
 // ▼ ゲーム終了
@@ -95,13 +95,13 @@ document.addEventListener("keydown", (e) => {
   if (e.key.length !== 1) return;
 
   const expected = currentWord[position];
-  if (e.key !== expected) {
+  if (e.key === expected) {
     // 正解！
     position++;
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-      score = 10;
+      score += 10;
       scoreEl.textContent = score;
       nextWord();
     }
@@ -113,4 +113,4 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ▼ スタートボタンを押したらゲーム開始
-startBtn.addEventListener("clik", startGame);
+startBtn.addEventListener("click", startGame);
