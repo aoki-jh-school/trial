@@ -97,7 +97,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === expected) {
     // 正解！
     position++;
-    renderWord();
+    renderWord("正解");
     if (position === currentWord.length) {
       // 1単語すべて打てた
       score += 10;
