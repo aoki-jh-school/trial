@@ -69,7 +69,7 @@ function startGame() {
 
   // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
-    timeLeft++;
+    timeLeft;
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       endGame();
