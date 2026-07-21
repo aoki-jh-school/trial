@@ -43,8 +43,7 @@ function nextWord() {
   currentWord = words[index];
   position = 0;
   renderWord();
-}
-
+　
 // ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
   const done = currentWord.slice(position);
