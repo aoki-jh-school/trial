@@ -14,6 +14,11 @@ const words = [
   "typing",
   "game",
   "school",
+  "cat",
+   "youtube",
+  "club",
+　"mountain",
+　  "jingisukan",
 ];
 
 // ▼ ゲームの設定
@@ -110,7 +115,7 @@ document.addEventListener("keydown", (e) => {
     miss++;
     missEl.textContent = miss;
   }
-}); // 🌟ここに「 }); 」を追加してください！
+}); 
 
 // ▼ スタートボタンを押したらゲーム開始
 startBtn.addEventListener("click", startGame);
