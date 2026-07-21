@@ -67,9 +67,9 @@ function startGame() {
   inputEl.focus();
   nextWord();
 
-  // 1秒ごとに時間をへらす
+   // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
-    timeLeft;
+    timeLeft--;
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       endGame();
