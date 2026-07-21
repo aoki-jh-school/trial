@@ -43,7 +43,8 @@ function nextWord() {
   currentWord = words[index];
   position = 0;
   renderWord();
-　
+}
+
 // ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
   const done = currentWord.slice(0, position);
@@ -97,7 +98,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === expected) {
     // 正解！
     position++;
-    renderWord("正解");
+    renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
       score += 10;
