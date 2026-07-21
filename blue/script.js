@@ -100,7 +100,7 @@ document.addEventListener("keydown", (e) => {
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-      score -= 10;
+      score += 10;
       scoreEl.textContent = score;
       nextWord();
     }
