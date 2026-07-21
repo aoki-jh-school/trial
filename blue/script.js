@@ -105,8 +105,8 @@ document.addEventListener("keydown", (e) => {
       nextWord();
     }
   } else {
-    // ミス
-    missEl
+    // ミス++;
+   missEl.textContent = miss;
   }
 });
 
