@@ -37,14 +37,13 @@ let position = 0; // いま何文字目まで打てたか
 let timerId = null;
 let playing = false;
 
-// ▼ 新しいお題を出す
+//// ▼ 新しいお題を出す
 function nextWord() {
-  const index = Math.floor(Math.random() * 1);
+  const index = Math.floor(Math.random() * words.length);
   currentWord = words[index];
   position = 0;
   renderWord();
-}
-
+ 
 // ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
   const done = currentWord.slice(0, position);
