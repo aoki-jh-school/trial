@@ -106,7 +106,7 @@ document.addEventListener("keydown", (e) => {
     }
   } else {
     // ミス
-    miss++;
+    missEl
   }
 });
 
