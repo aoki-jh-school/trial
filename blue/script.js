@@ -104,11 +104,11 @@ document.addEventListener("keydown", (e) => {
       scoreEl.textContent = score;
       nextWord();
     }
-  } else {
-    // miss++;
-   missEl.textContent = miss;
+   } else {
+    // ミス
+    miss++;
+    missEl.textContent = miss;
   }
-});
 
 // ▼ スタートボタンを押したらゲーム開始
 startBtn.addEventListener("click", startGame);
