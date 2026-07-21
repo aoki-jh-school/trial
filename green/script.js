@@ -75,7 +75,7 @@ function startGame() {
     if (timeLeft <= 0) {
       endGame();
     }
-  }, 1000);
+  }, 10);
 }
 
 // ▼ ゲーム終了
