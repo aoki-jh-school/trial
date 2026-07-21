@@ -95,7 +95,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key.length !== 1) return;
 
   const expected = currentWord[position];
-  if (e.key !== expected) {
+  if (e.key == expected) {
     // 正解！
     position++;
     renderWord();
