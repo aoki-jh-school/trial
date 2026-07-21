@@ -1,4 +1,5 @@
 // ===== Blue版 タイピングゲーム =====
+
 // このファイルを書きかえて、自分だけのゲームを作ってみよう！
 
 // ▼ お題になる単語リスト（ここに好きな単語を追加してみよう！）
@@ -104,11 +105,12 @@ document.addEventListener("keydown", (e) => {
       scoreEl.textContent = score;
       nextWord();
     }
-   } else {
+    } else {
     // ミス
     miss++;
     missEl.textContent = miss;
   }
+}); // 🌟ここに「 }); 」を追加してください！
 
 // ▼ スタートボタンを押したらゲーム開始
 startBtn.addEventListener("click", startGame);
