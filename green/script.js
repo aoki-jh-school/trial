@@ -113,4 +113,4 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ▼ スタートボタンを押したらゲーム開始
-startBtn.addEventListener("clik", startGame);
+startBtn.addEventListener("click", startGame);
