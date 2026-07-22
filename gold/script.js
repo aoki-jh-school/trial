@@ -247,6 +247,8 @@ document.addEventListener("keydown", (e) => {
 
     labelEl.textContent = "正解";
     scoreEl.textContent = score;
+
+    playCorrect();
     nextWord();
   } else {
     // ミス
