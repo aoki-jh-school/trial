@@ -1,8 +1,8 @@
 /* ===== Blue版 スタイル ===== */
 /* 色を変えたいときは下の --main-color などをいじってみよう！ */
 :root {
-  --main-color: #f9a825;
-  --dark-color: #e65100;
+  --main-color: #8295cc;
+  --dark-color: #5182d2;
   --accent-color: #ffffff8d;
 }
 
