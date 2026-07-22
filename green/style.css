@@ -113,3 +113,33 @@ h1 { font-size: 1.8rem; margin-bottom: 24px; }
 
 .back { margin-top: 16px; font-size: 0.9rem; }
 .back a { color: #fff; }
+.pop-anim {
+  animation: pop 0.08s ease-out;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08) translateY(-2px); }
+  100% { transform: scale(1); }
+}
+
+.fever-flash {
+  animation: fever 0.25s ease-out;
+}
+
+@keyframes fever {
+  0% { background-color: rgba(255, 215, 0, 0.4); }
+  100% { background-color: transparent; }
+}
+
+.shake-anim {
+  animation: shake 0.15s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); background-color: rgba(255, 0, 0, 0.3); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); background-color: transparent; }
+}
