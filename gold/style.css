@@ -3,7 +3,7 @@
 :root {
   --main-color: #f9a825;
   --dark-color: #e65100;
-  --accent-color: #b8d941;
+  --accent-color: #e3c93979;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
