@@ -111,6 +111,8 @@ document.addEventListener("keydown", (e) => {
     // ミス
     miss++;
     missEl.textContent = miss;
+    labelEl.textContent = "miss";
+      scoreEl.textContent = score;
   }
 });
 
