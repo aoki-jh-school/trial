@@ -16,6 +16,27 @@
     <p class="note">💡 <code>console.log(...)</code> の結果はこのページの中に出るので、開発者ツール（DevTools）は開かなくてOKです。</p>
   </header>
 
+  <!-- 効果音ボタン（10種類） -->
+  <section class="sound-panel">
+    <h2>🔊 効果音ボタン（10種類）</h2>
+    <p class="sound-lead">
+      ボタンをクリックすると音が鳴ります。<br />
+      同じ音は上のエディタからも <code>playCoin()</code> のように呼び出せます！
+    </p>
+    <div class="sound-buttons">
+      <button class="sound-btn" onclick="playBeep()">🔔 ビープ</button>
+      <button class="sound-btn" onclick="playCorrect()">⭕ ピンポン（正解）</button>
+      <button class="sound-btn" onclick="playWrong()">❌ ブブー（不正解）</button>
+      <button class="sound-btn" onclick="playCoin()">🪙 コイン</button>
+      <button class="sound-btn" onclick="playJump()">🦘 ジャンプ</button>
+      <button class="sound-btn" onclick="playLaser()">🔫 レーザー</button>
+      <button class="sound-btn" onclick="playExplosion()">💥 ばくはつ</button>
+      <button class="sound-btn" onclick="playPowerUp()">⬆️ パワーアップ</button>
+      <button class="sound-btn" onclick="playClick()">👆 クリック</button>
+      <button class="sound-btn" onclick="playFanfare()">🎺 ファンファーレ</button>
+    </div>
+  </section>
+
   <!-- 各レッスンのカードは script.js から自動で作られます -->
   <main id="lessons" class="lessons"></main>
 
