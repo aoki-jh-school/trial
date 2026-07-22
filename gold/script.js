@@ -105,7 +105,12 @@ document.addEventListener("keydown", (e) => {
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-      score += 10;
+     if (timeLeft <= 15) {
+score += 20;
+} else {
+score += 10;
+}
+
       labelEl.textContent = "正解";
       scoreEl.textContent = score;
       nextWord();
