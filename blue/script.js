@@ -14,11 +14,7 @@ const words = [
   "typing",
   "game",
   "school",
-  "cat",
-   "youtube",
-  "club",
-　"mountain",
-　  "jingisukan",
+  
 ];
 
 // ▼ ゲームの設定
