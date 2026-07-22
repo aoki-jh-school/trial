@@ -171,6 +171,17 @@ let currentWord = "";
 let position = 0; // いま何文字目まで打てたか
 let timerId = null;
 let playing = false;
+let bonus = false; // ボーナスが有効かどうか
+
+// ▼ ボーナスをオンにする
+function bonusOn() {
+  bonus = true;
+}
+
+// ▼ ボーナスをオフにする
+function bonusOff() {
+  bonus = false;
+}
 
 // ▼ 新しいお題を出す
 function nextWord() {
