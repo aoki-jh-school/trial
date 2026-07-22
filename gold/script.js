@@ -62,8 +62,8 @@ function playBeep() {
 
 // ② ピンポン（正解）：高い音を2つ「ピン・ポーン」
 function playCorrect() {
-  _tone(988, 0.12, "sine", 0);      // ピン
-  _tone(1319, 0.25, "sine", 0.12);  // ポーン
+  _tone(988, 0.12, "sine", 0); // ピン
+  _tone(1319, 0.25, "sine", 0.12); // ポーン
 }
 
 // ③ ブブー（不正解）：低い音が2回「ブッ・ブー」
@@ -129,10 +129,10 @@ function playClick() {
 
 // ⑩ ファンファーレ：「タターン！」というお祝いの音
 function playFanfare() {
-  _tone(523, 0.15, "square", 0);      // ド
-  _tone(523, 0.15, "square", 0.15);   // ド
-  _tone(523, 0.15, "square", 0.3);    // ド
-  _tone(784, 0.5, "square", 0.45);    // ソ（のばす）
+  _tone(523, 0.15, "square", 0); // ド
+  _tone(523, 0.15, "square", 0.15); // ド
+  _tone(523, 0.15, "square", 0.3); // ド
+  _tone(784, 0.5, "square", 0.45); // ソ（のばす）
 }
 
 // ▼ お題になる単語リスト（ここに好きな単語を追加してみよう！）
@@ -209,7 +209,7 @@ function startGame() {
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       endGame();
-    };
+    }
   }, 1000);
 }
 
@@ -221,8 +221,7 @@ function endGame() {
   wordEl.textContent = "おつかれさま！";
   typedEl.textContent = "";
   resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
- labelEl.textContent = ""; 
-
+  labelEl.textContent = "";
 }
 
 // ▼ キーが押されたときの処理
@@ -235,36 +234,30 @@ document.addEventListener("keydown", (e) => {
   if (e.key === expected) {
     // 正解！
     position++;
-    labelEl.textContent = "good"; 
+    labelEl.textContent = "good";
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-    
     }
-    
-
-if (timeLeft <= 20) {
-score += 20;
-} else {
-score += 10;
-}
-
-      labelEl.textContent = "正解";
-      scoreEl.textContent = score;
-      nextWord();
+    if (timeLeft <= 20) {
+      score += 20;
+    } else {
+      score += 10;
     }
-   } else {
+
+    labelEl.textContent = "正解";
+    scoreEl.textContent = score;
+    nextWord();
+  } else {
     // ミス
     miss++;
     missEl.textContent = miss;
     labelEl.textContent = "miss";
-   
   }
-   document.body.classList.add("miss-flash");
+  document.body.classList.add("miss-flash");
   setTimeout(() => {
     document.body.classList.remove("miss-flash");
   }, 100); // 0.1秒後に元に戻す
-
 });
 
 // ▼ スタートボタンを押したらゲーム開始
