@@ -1,4 +1,4 @@
-// ==========================================
+/// ==========================================
 // 1. お題データベース（ひらがな付き）
 // ==========================================
 const ALL_WORDS = [
@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス (全文字計算対応)
+// 2. 柔軟入力判定クラス (ん/nn対応改善版)
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -106,19 +106,16 @@ class FlexibleTypingEngine {
     this.updateDisplay();
   }
 
-  // 単語全体の表示用ローマ字を計算する
   updateDisplay() {
     let restKana = this.kana.slice(this.kanaIndex);
     let restRoma = "";
     
-    // 現在タイプ中の文字の残りを追加
     if (this.patterns && this.patterns.length > 0) {
       const currentPattern = this.patterns[0];
       restRoma += currentPattern.romaji.slice(this.typedBuffer.length);
       restKana = restKana.slice(currentPattern.kanaLength);
     }
 
-    // 残りのひらがなをすべて標準的なローマ字に変換してつなげる
     while (restKana.length > 0) {
       let patterns = this.getPatternsAt(restKana);
       if (patterns.length > 0) {
@@ -147,8 +144,10 @@ class FlexibleTypingEngine {
       }
     }
 
-    // ん
+    // 「ん」の判定 (文字数の多い "nn" を優先的に登録し、条件次第で "n" も受容)
     if (restKana.startsWith("ん")) {
+      patterns.push({ romaji: "nn", kanaLength: 1 });
+      
       const nextChar = restKana[1];
       const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
       if (!isNextVowelOrY) {
@@ -156,12 +155,14 @@ class FlexibleTypingEngine {
       }
     }
 
-    // 辞書マッチング（3音〜1音）
+    // 辞書マッチング
     for (let len = 3; len >= 1; len--) {
       if (restKana.length >= len) {
         const sub = restKana.slice(0, len);
         if (ROMA_MAP[sub]) {
           for (let r of ROMA_MAP[sub]) {
+            // 「ん」は上記で個別処理済みのため除外
+            if (sub === "ん") continue;
             patterns.push({ romaji: r, kanaLength: len });
           }
         }
