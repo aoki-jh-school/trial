@@ -236,20 +236,21 @@ document.addEventListener("keydown", (e) => {
     position++;
     labelEl.textContent = "good";
     renderWord();
+
     if (position === currentWord.length) {
       // 1単語すべて打てた
-    }
-    if (timeLeft <= 20) {
-      score += 20;
-    } else {
-      score += 10;
-    }
+      if (timeLeft <= 20) {
+        score += 20;
+      } else {
+        score += 10;
+      }
 
-    labelEl.textContent = "正解";
-    scoreEl.textContent = score;
+      labelEl.textContent = "正解";
+      scoreEl.textContent = score;
 
-    playCorrect();
-    nextWord();
+      playCorrect();
+      nextWord();
+    }
   } else {
     // ミス
     miss++;
