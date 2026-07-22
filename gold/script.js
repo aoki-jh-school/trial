@@ -99,6 +99,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === expected) {
     // 正解！
     position++;
+    labelEl.textContent = "○"; 
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
@@ -112,8 +113,13 @@ document.addEventListener("keydown", (e) => {
     miss++;
     missEl.textContent = miss;
     labelEl.textContent = "miss";
-      scoreEl.textContent = score;
+  
   }
+   document.body.classList.add("miss-flash");
+  setTimeout(() => {
+    document.body.classList.remove("miss-flash");
+  }, 100); // 0.1秒後に元に戻す
+
 });
 
 // ▼ スタートボタンを押したらゲーム開始
