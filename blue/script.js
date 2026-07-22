@@ -1,20 +1,13 @@
-// ===== Blue版 タイピングゲーム =====
-
-// このファイルを書きかえて、自分だけのゲームを作ってみよう！
-
-// ▼ お題になる単語リスト（ここに好きな単語を追加してみよう！）
 const words = [
-  "apple",
-  "banana",
-  "orange",
-  "computer",
-  "keyboard",
-  "programming",
-  "javascript",
-  "typing",
-  "game",
-  "school",
-  
+  { japanese: "りんご", roma: "apple" },
+  { japanese: "バナナ", roma: "banana" },
+  { japanese: "オレンジ", roma: "orange" },
+  { japanese: "コンピューター", roma: "computer" },
+  { japanese: "キーボード", roma: "keyboard" },
+  { japanese: "プログラミング", roma: "programming" },
+  { japanese: "タイピング", roma: "typing" },
+  { japanese: "ゲーム", roma: "game" },
+  { japanese: "学校", roma: "school" }
 ];
 
 // ▼ ゲームの設定
@@ -34,23 +27,28 @@ const resultEl = document.getElementById("result");
 let score = 0;
 let miss = 0;
 let timeLeft = TIME_LIMIT;
-let currentWord = "";
-let position = 0; // いま何文字目まで打てたか
+let currentWord = null;
+let position = 0;
 let timerId = null;
 let playing = false;
 
-//// ▼ 新しいお題を出す
+// ▼ 新しいお題を出す
 function nextWord() {
   const index = Math.floor(Math.random() * words.length);
   currentWord = words[index];
   position = 0;
   renderWord();
 }
-// ▼ お題を画面に表示する（打てた文字は色をかえる）
+
+// ▼ お題を画面に表示する
 function renderWord() {
-  const done = currentWord.slice(0, position);
-  const rest = currentWord.slice(position);
-  wordEl.innerHTML = `<span class="done">${done}</span>${rest}`;
+  const done = currentWord.roma.slice(0, position);
+  const rest = currentWord.roma.slice(position);
+  
+  wordEl.innerHTML = `
+    <div class="ja-word">${currentWord.japanese}</div>
+    <div class="roma-word"><span class="done">${done}</span>${rest}</div>
+  `;
   typedEl.textContent = done;
 }
 
@@ -69,7 +67,7 @@ function startGame() {
   inputEl.focus();
   nextWord();
 
-   // 1秒ごとに時間をへらす
+  // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
     timeLeft--;
     timeEl.textContent = timeLeft;
@@ -84,7 +82,7 @@ function endGame() {
   playing = false;
   clearInterval(timerId);
   startBtn.disabled = false;
-  wordEl.textContent = "おつかれさま！";
+  wordEl.innerHTML = '<div class="ja-word">おつかれさま！</div>';
   typedEl.textContent = "";
   resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
 }
@@ -92,22 +90,22 @@ function endGame() {
 // ▼ キーが押されたときの処理
 document.addEventListener("keydown", (e) => {
   if (!playing) return;
-  // 記号や特殊キーは無視（1文字のキーだけ受け取る）
   if (e.key.length !== 1) return;
 
-  const expected = currentWord[position];
+  // 誤動作を防ぐために隠しフォームにフォーカス
+  inputEl.focus();
+
+  const expected = currentWord.roma[position];
   if (e.key === expected) {
-    // 正解！
     position++;
     renderWord();
-    if (position === currentWord.length) {
-      // 1単語すべて打てた
+    if (position === currentWord.roma.length) {
       score += 10;
       scoreEl.textContent = score;
+      inputEl.value = "";
       nextWord();
     }
-    } else {
-    // ミス
+  } else {
     miss++;
     missEl.textContent = miss;
   }
