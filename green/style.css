@@ -1,9 +1,9 @@
 /* ===== Gold版（お手本）スタイル ===== */
 /* このファイルが「正解」の状態です。blue/green のバグ探しの答え合わせに使ってね。 */
 :root {
-  --main-color: #f9a825;
-  --dark-color: #e65100;
-  --accent-color: #ffffff8d;
+  --main-color: #1b9605;
+  --dark-color: #0fe600d8;
+  --accent-color: #e1b02a8d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
