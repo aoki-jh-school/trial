@@ -235,7 +235,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === expected) {
     // 正解！
     position++;
-    labelEl.textContent = "○"; 
+    labelEl.textContent = "good"; 
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
