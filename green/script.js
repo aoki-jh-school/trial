@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス（表示不具合完全修正版）
+// 2. タイピング判定エンジン (完全修正版)
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -103,26 +103,79 @@ class FlexibleTypingEngine {
     this.typedBuffer = "";
     this.displayRomaDone = "";
     this.displayRomaRest = "";
-    this.pendingN = false;
     this.updateDisplay();
+  }
+
+  // 現在の文字位置における入力候補を取得
+  getValidRomajiForCurrentKana() {
+    const restKana = this.kana.slice(this.kanaIndex);
+    if (!restKana) return [];
+
+    let results = [];
+
+    // 1. っ（促音）の判定
+    if (restKana.startsWith("っ") && restKana.length > 1) {
+      const nextKana = restKana.slice(1);
+      const nextPatterns = this.getPatternsForKana(nextKana);
+      for (let p of nextPatterns) {
+        const firstChar = p.romaji[0];
+        if (firstChar && !"aeiounn".includes(firstChar)) {
+          results.push({ romaji: firstChar, kanaLength: 1 });
+        }
+      }
+    }
+
+    // 2. 「ん」の特別判定
+    if (restKana.startsWith("ん")) {
+      results.push({ romaji: "nn", kanaLength: 1 });
+
+      const nextChar = restKana[1];
+      const isVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
+      if (!isVowelOrY) {
+        results.push({ romaji: "n", kanaLength: 1 });
+      }
+    }
+
+    // 3. 辞書マッチング
+    for (let len = Math.min(3, restKana.length); len >= 1; len--) {
+      const sub = restKana.slice(0, len);
+      if (ROMA_MAP[sub]) {
+        for (let r of ROMA_MAP[sub]) {
+          if (sub === "ん") continue;
+          results.push({ romaji: r, kanaLength: len });
+        }
+      }
+    }
+
+    return results;
+  }
+
+  getPatternsForKana(kanaStr) {
+    let patterns = [];
+    for (let len = Math.min(3, kanaStr.length); len >= 1; len--) {
+      const sub = kanaStr.slice(0, len);
+      if (ROMA_MAP[sub]) {
+        for (let r of ROMA_MAP[sub]) {
+          patterns.push({ romaji: r, kanaLength: len });
+        }
+      }
+    }
+    return patterns;
   }
 
   updateDisplay() {
     let restKana = this.kana.slice(this.kanaIndex);
     let restRoma = "";
 
-    // 「ん」の1打目（n）が入力済みのとき
-    if (this.pendingN) {
-      restKana = restKana.slice(1); // 「ん」の分を進める
-    } else if (this.patterns && this.patterns.length > 0) {
-      const currentPattern = this.patterns[0];
-      restRoma += currentPattern.romaji.slice(this.typedBuffer.length);
-      restKana = restKana.slice(currentPattern.kanaLength);
+    let candidates = this.getValidRomajiForCurrentKana();
+    if (candidates.length > 0) {
+      let matched = candidates.find(c => c.romaji.startsWith(this.typedBuffer)) || candidates[0];
+      restRoma += matched.romaji.slice(this.typedBuffer.length);
+      restKana = restKana.slice(matched.kanaLength);
     }
 
-    // 残りのひらがなをローマ字に変換してつなげる
     while (restKana.length > 0) {
-      let patterns = this.getPatternsAt(restKana);
+      let patterns = this.getPatternsForKana(restKana);
       if (patterns.length > 0) {
         restRoma += patterns[0].romaji;
         restKana = restKana.slice(patterns[0].kanaLength);
@@ -134,97 +187,32 @@ class FlexibleTypingEngine {
     this.displayRomaRest = restRoma;
   }
 
-  getPatternsAt(restKana) {
-    let patterns = [];
-
-    // っ（促音）
-    if (restKana.startsWith("っ") && restKana.length > 1) {
-      const nextKanaRest = restKana.slice(1);
-      const nextPatterns = this.getPatternsAt(nextKanaRest);
-      for (let np of nextPatterns) {
-        const firstChar = np.romaji[0];
-        if (firstChar && !"aeiounn".includes(firstChar)) {
-          patterns.push({ romaji: firstChar, kanaLength: 1 });
-        }
-      }
-    }
-
-    // 辞書マッチング
-    for (let len = 3; len >= 1; len--) {
-      if (restKana.length >= len) {
-        const sub = restKana.slice(0, len);
-        if (ROMA_MAP[sub]) {
-          for (let r of ROMA_MAP[sub]) {
-            patterns.push({ romaji: r, kanaLength: len });
-          }
-        }
-      }
-    }
-
-    return patterns;
-  }
-
   inputKey(key) {
-    const restKana = this.kana.slice(this.kanaIndex);
+    const candidates = this.getValidRomajiForCurrentKana();
+    const testBuffer = this.typedBuffer + key;
 
-    // 「ん」の1打目（n）が押されている状態での処理
-    if (this.pendingN) {
-      if (key === 'n') {
-        // 2打目の n が押された ➔ 「ん」完了！
-        this.pendingN = false;
-        this.kanaIndex += 1;
-        this.typedBuffer = "";
-        this.displayRomaDone += key;
-        this.updateDisplay();
-        return true;
-      } else {
-        // n 以外のキーが押された
-        const nextChar = restKana[1];
-        const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
+    let matched = candidates.find(c => c.romaji.startsWith(testBuffer));
 
-        if (!isNextVowelOrY) {
-          // 母音・ヤ行以外なら n 1回で「ん」を完了させ、入力キーを次の文字へ回す
-          this.pendingN = false;
-          this.kanaIndex += 1;
-          this.typedBuffer = "";
-        } else {
-          // 母音・ヤ行の前での n 1打＋別キーはミス
-          this.pendingN = false;
-          return false;
-        }
-      }
+    // 「n」入力後に別のキー（例: 's'）が押され、「n」1打で「ん」を確定させる処理
+    if (!matched && candidates.some(c => c.romaji === this.typedBuffer)) {
+      let exact = candidates.find(c => c.romaji === this.typedBuffer);
+      this.kanaIndex += exact.kanaLength;
+      this.typedBuffer = "";
+      return this.inputKey(key); // 新しい位置で押されたキーを再評価
     }
 
-    // 通常の文字判定
-    const currentRestKana = this.kana.slice(this.kanaIndex);
-    this.patterns = this.getPatternsAt(currentRestKana);
-
-    // 「ん」の1打目として n が押された場合
-    if (currentRestKana.startsWith("ん") && this.typedBuffer === "" && key === "n") {
-      this.pendingN = true;
-      this.displayRomaDone += key;
-      this.updateDisplay();
-      return true;
-    }
-
-    const nextBuffer = this.typedBuffer + key;
-    let matchedPattern = null;
-
-    for (let p of this.patterns) {
-      if (p.romaji.startsWith(nextBuffer)) {
-        matchedPattern = p;
-        break;
-      }
-    }
-
-    if (matchedPattern) {
-      this.typedBuffer = nextBuffer;
+    if (matched) {
+      this.typedBuffer = testBuffer;
       this.displayRomaDone += key;
 
-      if (this.typedBuffer === matchedPattern.romaji) {
-        this.kanaIndex += matchedPattern.kanaLength;
+      // 「nn」などのより長いパターンが残っている場合は確定を保留
+      let hasLongerCandidate = candidates.some(c => 
+        c.romaji.startsWith(this.typedBuffer) && c.romaji.length > this.typedBuffer.length
+      );
+
+      if (this.typedBuffer === matched.romaji && !hasLongerCandidate) {
+        this.kanaIndex += matched.kanaLength;
         this.typedBuffer = "";
-        this.patterns = null;
       }
 
       this.updateDisplay();
@@ -235,7 +223,7 @@ class FlexibleTypingEngine {
   }
 
   isComplete() {
-    return this.kanaIndex >= this.kana.length && !this.pendingN;
+    return this.kanaIndex >= this.kana.length && this.typedBuffer === "";
   }
 }
 
