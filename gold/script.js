@@ -75,7 +75,7 @@ function startGame() {
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
       endGame();
-    }
+    };
   }, 1000);
 }
 
