@@ -239,13 +239,13 @@ document.addEventListener("keydown", (e) => {
     renderWord();
     if (position === currentWord.length) {
       // 1単語すべて打てた
-  
+ 
       // ② ピンポン（正解）：高い音を2つ「ピン・ポーン」
 function playCorrect() {
   _tone(988, 0.12, "sine", 0);      // ピン
   _tone(1319, 0.25, "sine", 0.12);  // ポーン
-}
 
+}
 
 if (timeLeft <= 20) {
 score += 20;
