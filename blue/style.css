@@ -14,7 +14,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--main-color), var(--dark-color));
+  background: linear-gradient(135deg, #ff00ff, #00aa00);
   color: #fff;
   padding: 20px;
 }
