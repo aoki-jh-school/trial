@@ -182,8 +182,8 @@ function nextWord() {
 
 // ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
-  const done = currentWord.slice(0, position);
-  const rest = currentWord.slice(position);
+  const done = currentWord["roma"].slice(0, position);
+  const rest = currentWord["roma"].slice(position);
   wordEl.innerHTML = `<span class="done">${done}</span>${rest}`;
   typedEl.textContent = done;
 }
