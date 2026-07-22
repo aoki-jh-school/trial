@@ -27,6 +27,7 @@ const typedEl = document.getElementById("typed");
 const inputEl = document.getElementById("input");
 const startBtn = document.getElementById("startBtn");
 const resultEl = document.getElementById("result");
+const labelEl = document.getElementById("label");
 
 // ▼ ゲームの状態を覚えておく変数
 let score = 0;
@@ -102,6 +103,7 @@ document.addEventListener("keydown", (e) => {
     if (position === currentWord.length) {
       // 1単語すべて打てた
       score += 10;
+      labelEl.textContent = "正解";
       scoreEl.textContent = score;
       nextWord();
     }
