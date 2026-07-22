@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス（んの1打/2打 完全両立版）
+// 2. 柔軟入力判定クラス（んの動作完全修正版）
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -103,7 +103,7 @@ class FlexibleTypingEngine {
     this.typedBuffer = "";
     this.displayRomaDone = "";
     this.displayRomaRest = "";
-    this.pendingN = false; // 「ん」の1文字目の n を保持しているフラグ
+    this.pendingN = false;
     this.updateDisplay();
   }
 
@@ -111,7 +111,6 @@ class FlexibleTypingEngine {
     let restKana = this.kana.slice(this.kanaIndex);
     let restRoma = "";
 
-    // 「ん」を n 1回だけで入力中の状態
     if (this.pendingN) {
       restRoma += "n";
       restKana = restKana.slice(1);
@@ -167,10 +166,10 @@ class FlexibleTypingEngine {
   inputKey(key) {
     const restKana = this.kana.slice(this.kanaIndex);
 
-    // --- 「ん」の n 1打目の後の特別判定 ---
+    // 「ん」の1打目（n）がすでに入力されている状態での判定
     if (this.pendingN) {
       if (key === 'n') {
-        // 2打目の n が来たら 「ん (nn)」 を確定
+        // 2打目の n が来たら 「ん (nn)」 として確定（次の文字には波及させない）
         this.pendingN = false;
         this.kanaIndex += 1;
         this.typedBuffer = "";
@@ -178,29 +177,28 @@ class FlexibleTypingEngine {
         this.updateDisplay();
         return true;
       } else {
-        // n 以外のキーが来たら「ん (n 1回分)」を確定させ、そのまま次の文字の入力として評価
+        // n 以外のキーが来た場合
         const nextChar = restKana[1];
         const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
 
-        // 母音・ヤ行の前でなければ 1打打ち成立
         if (!isNextVowelOrY) {
+          // 母音・ヤ行以外なら n 1回打ちで「ん」を完了し、そのまま押されたキーで次の文字を判定
           this.pendingN = false;
           this.kanaIndex += 1;
           this.typedBuffer = "";
-          // 判定を次へと進めるため下へ抜ける
         } else {
-          // 母音・ヤ行の前で n 1回＋別キーはミス
+          // 母音・ヤ行の前なら n1回＋別キーはミス
           this.pendingN = false;
           return false;
         }
       }
     }
 
-    // --- 通常の判定 ---
+    // 通常の文字判定
     const currentRestKana = this.kana.slice(this.kanaIndex);
     this.patterns = this.getPatternsAt(currentRestKana);
 
-    // 「ん」の単体入力開始で n が押された場合
+    // 「ん」の1打目として n が押された場合
     if (currentRestKana.startsWith("ん") && this.typedBuffer === "" && key === "n") {
       this.pendingN = true;
       this.displayRomaDone += key;
