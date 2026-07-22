@@ -113,3 +113,6 @@ h1 { font-size: 1.8rem; margin-bottom: 24px; }
 
 .back { margin-top: 16px; font-size: 0.9rem; }
 .back a { color: #fff; }
+body.miss-flash {
+  background: #d32f2f !important;
+}
