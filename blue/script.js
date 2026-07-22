@@ -10,6 +10,7 @@ const words = [
   { japanese: "学校", roma: "school" }
   { japanese: "いぬ", roma: "dog" },
   { japanese: "コーヒー", roma: "caffee" },
+
 ];
 
 // ▼ ゲームの設定
