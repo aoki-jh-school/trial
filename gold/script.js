@@ -240,6 +240,13 @@ document.addEventListener("keydown", (e) => {
     if (position === currentWord.length) {
       // 1単語すべて打てた
      if (timeLeft <= 20) {
+function playPowerUp() {
+  const notes = [523, 659, 784, 1047]; // ド・ミ・ソ・高いド
+  notes.forEach((f, i) => _tone(f, 0.15, "square", i * 0.1));
+}
+}
+
+if (timeLeft <= 20) {
 score += 20;
 } else {
 score += 10;
