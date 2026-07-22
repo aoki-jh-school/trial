@@ -255,6 +255,7 @@ score += 10;
     miss++;
     missEl.textContent = miss;
     labelEl.textContent = "miss";
+    scoreEl.textContent = score;
    
   }
    document.body.classList.add("miss-flash");
