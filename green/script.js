@@ -2,7 +2,7 @@
 // 1. お題データベース（ひらがな付き）
 // ==========================================
 const ALL_WORDS = [
-  // 【かんたん：6文字以内相当】
+  // 【かんたん：4文字以内】
   { japanese: "いぬ", kana: "いぬ" },
   { japanese: "ねこ", kana: "ねこ" },
   { japanese: "とり", kana: "とり" },
@@ -24,7 +24,7 @@ const ALL_WORDS = [
   { japanese: "ほし", kana: "ほし" },
   { japanese: "つき", kana: "つき" },
 
-  // 【ふつう：7〜13文字相当】
+  // 【ふつう：5〜10文字】
   { japanese: "部屋が汚い", kana: "へやがきたない" },
   { japanese: "青木中学校", kana: "あおきちゅうがっこう" },
   { japanese: "りんごあめ", kana: "りんごあめ" },
@@ -41,7 +41,7 @@ const ALL_WORDS = [
   { japanese: "富士山登頂", kana: "ふじさんとうちょう" },
   { japanese: "雪だるま", kana: "ゆきだるま" },
 
-  // 【むずかしい：14文字以上相当】
+  // 【むずかしい：11文字以上】
   { japanese: "トイレに行きたいです", kana: "といれにいきたいです" },
   { japanese: "人間はゴリラの仲間", kana: "にんげんはごりらのなかま" },
   { japanese: "超高性能コンピューター", kana: "ちょうこうせいのうこんぴゅーたー" },
@@ -54,7 +54,7 @@ const ALL_WORDS = [
   { japanese: "東京スカイツリータワー", kana: "とうきょうすかいつりーたわー" }
 ];
 
-// 補完用のローマ字辞書マップ
+// ローマ字辞書
 const ROMA_MAP = {
   "あ":["a"],"い":["i"],"う":["u","wu"],"え":["e"],"お":["o"],
   "か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],
@@ -94,49 +94,60 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス (Romaji State Machine)
+// 2. 柔軟入力判定クラス (全文字計算対応)
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
     this.kana = kana;
     this.kanaIndex = 0;
-    this.typedBuffer = ""; // 現在のひら単体に対してタイプ中の文字列
+    this.typedBuffer = "";
     this.displayRomaDone = "";
     this.displayRomaRest = "";
-    this.updateTarget();
+    this.updateDisplay();
   }
 
-  updateTarget() {
-    if (this.isComplete()) {
-      this.displayRomaRest = "";
-      return;
+  // 単語全体の表示用ローマ字を計算する
+  updateDisplay() {
+    let restKana = this.kana.slice(this.kanaIndex);
+    let restRoma = "";
+    
+    // 現在タイプ中の文字の残りを追加
+    if (this.patterns && this.patterns.length > 0) {
+      const currentPattern = this.patterns[0];
+      restRoma += currentPattern.romaji.slice(this.typedBuffer.length);
+      restKana = restKana.slice(currentPattern.kanaLength);
     }
 
-    const restKana = this.kana.slice(this.kanaIndex);
-    this.patterns = this.getPatternsAt(restKana);
-    // 表示用のデフォルトローマ字（最初のパターン）を設定
-    this.displayRomaRest = this.patterns[0].romaji.slice(this.typedBuffer.length);
+    // 残りのひらがなをすべて標準的なローマ字に変換してつなげる
+    while (restKana.length > 0) {
+      let patterns = this.getPatternsAt(restKana);
+      if (patterns.length > 0) {
+        restRoma += patterns[0].romaji;
+        restKana = restKana.slice(patterns[0].kanaLength);
+      } else {
+        restKana = restKana.slice(1);
+      }
+    }
+
+    this.displayRomaRest = restRoma;
   }
 
   getPatternsAt(restKana) {
     let patterns = [];
 
-    // っ（促音）の特別判定
+    // っ（促音）
     if (restKana.startsWith("っ") && restKana.length > 1) {
       const nextKanaRest = restKana.slice(1);
       const nextPatterns = this.getPatternsAt(nextKanaRest);
       for (let np of nextPatterns) {
         const firstChar = np.romaji[0];
         if (firstChar && !"aeiounn".includes(firstChar)) {
-          patterns.push({
-            romaji: firstChar,
-            kanaLength: 1
-          });
+          patterns.push({ romaji: firstChar, kanaLength: 1 });
         }
       }
     }
 
-    // 「ん」の特別判定 (後ろが母音・ヤ行以外ならn1回でOK)
+    // ん
     if (restKana.startsWith("ん")) {
       const nextChar = restKana[1];
       const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
@@ -145,7 +156,7 @@ class FlexibleTypingEngine {
       }
     }
 
-    // 辞書（3文字、2文字、1文字のひらがな組み合わせ）から検索
+    // 辞書マッチング（3音〜1音）
     for (let len = 3; len >= 1; len--) {
       if (restKana.length >= len) {
         const sub = restKana.slice(0, len);
@@ -161,8 +172,10 @@ class FlexibleTypingEngine {
   }
 
   inputKey(key) {
+    const restKana = this.kana.slice(this.kanaIndex);
+    this.patterns = this.getPatternsAt(restKana);
+
     const nextBuffer = this.typedBuffer + key;
-    // 現在の候補の中で入力キーに一致するものがあるか検証
     let matchedPattern = null;
 
     for (let p of this.patterns) {
@@ -176,17 +189,17 @@ class FlexibleTypingEngine {
       this.typedBuffer = nextBuffer;
       this.displayRomaDone += key;
 
-      // 1つのひらがな（またはまとまり）の入力が完了したか
       if (this.typedBuffer === matchedPattern.romaji) {
         this.kanaIndex += matchedPattern.kanaLength;
         this.typedBuffer = "";
+        this.patterns = null;
       }
 
-      this.updateTarget();
-      return true; // 正解
+      this.updateDisplay();
+      return true;
     }
 
-    return false; // ミス
+    return false;
   }
 
   isComplete() {
