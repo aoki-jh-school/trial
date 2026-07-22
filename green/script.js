@@ -1,226 +1,204 @@
-// ▼ お題データベース（200語以上）
+// ==========================================
+// 1. お題データベース（ひらがな付き）
+// ==========================================
 const ALL_WORDS = [
-  // 【かんたん：6文字以内】
-  { japanese: "いぬ", roma: "inu" },
-  { japanese: "ねこ", roma: "neko" },
-  { japanese: "とり", roma: "tori" },
-  { japanese: "さる", roma: "saru" },
-  { japanese: "うま", roma: "uma" },
-  { japanese: "くま", roma: "kuma" },
-  { japanese: "りす", roma: "risu" },
-  { japanese: "かめ", roma: "kame" },
-  { japanese: "うし", roma: "usi" },
-  { japanese: "ぶた", roma: "buta" },
-  { japanese: "はな", roma: "hana" },
-  { japanese: "みず", roma: "mizu" },
-  { japanese: "やま", roma: "yama" },
-  { japanese: "かわ", roma: "kawa" },
-  { japanese: "うみ", roma: "umi" },
-  { japanese: "そら", roma: "sora" },
-  { japanese: "あめ", roma: "ame" },
-  { japanese: "ゆき", roma: "yuki" },
-  { japanese: "ほし", roma: "hosi" },
-  { japanese: "つき", roma: "tuki" },
-  { japanese: "ひかり", roma: "hikari" },
-  { japanese: "あさ", roma: "asa" },
-  { japanese: "よる", roma: "yoru" },
-  { japanese: "ほん", roma: "honn" },
-  { japanese: "かみ", roma: "kami" },
-  { japanese: "ペン", roma: "penn" },
-  { japanese: "つくえ", roma: "tukue" },
-  { japanese: "いす", roma: "isu" },
-  { japanese: "くつ", roma: "kutu" },
-  { japanese: "ふく", roma: "fuku" },
-  { japanese: "かさ", roma: "kasa" },
-  { japanese: "かぎ", roma: "kagi" },
-  { japanese: "はこ", roma: "hako" },
-  { japanese: "たまご", roma: "tamago" },
-  { japanese: "パン", roma: "pann" },
-  { japanese: "すし", roma: "susi" },
-  { japanese: "にく", roma: "niku" },
-  { japanese: "こめ", roma: "kome" },
-  { japanese: "みかん", roma: "mikann" },
-  { japanese: "いちご", roma: "itigo" },
-  { japanese: "すいか", roma: "suika" },
-  { japanese: "あか", roma: "aka" },
-  { japanese: "あお", roma: "ao" },
-  { japanese: "しろ", roma: "siro" },
-  { japanese: "くろ", roma: "kuro" },
-  { japanese: "きいろ", roma: "kiiro" },
-  { japanese: "みどり", roma: "midori" },
-  { japanese: "みみ", roma: "mimi" },
-  { japanese: "め", roma: "me" },
-  { japanese: "て", roma: "te" },
-  { japanese: "あし", roma: "asi" },
-  { japanese: "かお", roma: "kao" },
-  { japanese: "こころ", roma: "kokoro" },
-  { japanese: "とも", roma: "tomo" },
-  { japanese: "ゆめ", roma: "yume" },
-  { japanese: "あけ", roma: "ake" },
-  { japanese: "にし", roma: "nisi" },
-  { japanese: "ひがし", roma: "higasi" },
-  { japanese: "みなみ", roma: "minami" },
-  { japanese: "きた", roma: "kita" },
-  { japanese: "なつ", roma: "natu" },
-  { japanese: "ふゆ", roma: "fuyu" },
-  { japanese: "はる", roma: "haru" },
-  { japanese: "あき", roma: "aki" },
-  { japanese: "かぜ", roma: "kaze" },
-  { japanese: "なみ", roma: "nami" },
-  { japanese: "もり", roma: "mori" },
-  { japanese: "き", roma: "ki" },
-  { japanese: "くさ", roma: "kusa" },
-  { japanese: "つち", roma: "tuti" },
+  // 【かんたん：6文字以内相当】
+  { japanese: "いぬ", kana: "いぬ" },
+  { japanese: "ねこ", kana: "ねこ" },
+  { japanese: "とり", kana: "とり" },
+  { japanese: "さる", kana: "さる" },
+  { japanese: "うま", kana: "うま" },
+  { japanese: "くま", kana: "くま" },
+  { japanese: "りす", kana: "りす" },
+  { japanese: "かめ", kana: "かめ" },
+  { japanese: "うし", kana: "うし" },
+  { japanese: "ぶた", kana: "ぶた" },
+  { japanese: "はな", kana: "はな" },
+  { japanese: "みず", kana: "みず" },
+  { japanese: "やま", kana: "やま" },
+  { japanese: "かわ", kana: "かわ" },
+  { japanese: "うみ", kana: "うみ" },
+  { japanese: "そら", kana: "そら" },
+  { japanese: "あめ", kana: "あめ" },
+  { japanese: "ゆき", kana: "ゆき" },
+  { japanese: "ほし", kana: "ほし" },
+  { japanese: "つき", kana: "つき" },
 
-  // 【ふつう：7〜13文字】
-  { japanese: "部屋が汚い", roma: "heyagakitanai" },
-  { japanese: "青木中学校", roma: "aokityuugakkou" },
-  { japanese: "りんごあめ", roma: "rinngoame" },
-  { japanese: "カレーライス", roma: "kare-raisu" },
-  { japanese: "おこのみやき", roma: "okonomiyaki" },
-  { japanese: "ホットドッグ", roma: "hottodoggu" },
-  { japanese: "ハンバーガー", roma: "hannba-ga-" },
-  { japanese: "ソフトクリーム", roma: "sofutokuri-mu" },
-  { japanese: "チョコレート", roma: "tyokore-to" },
-  { japanese: "スマホゲーム", roma: "sumahoge-mu" },
-  { japanese: "ノートパソコン", roma: "no-topasokonn" },
-  { japanese: "ヘッドフォン", roma: "heddofonn" },
-  { japanese: "テレビゲーム", roma: "terebige-mu" },
-  { japanese: "えんぴつけずり", roma: "ennpitukezuri" },
-  { japanese: "シャープペン", roma: "sha-pupenn" },
-  { japanese: "けしごむ", roma: "kesigomu" },
-  { japanese: "きょうかしょ", roma: "kyoukasyo" },
-  { japanese: "たいいくかん", roma: "taiikukann" },
-  { japanese: "うんどうかい", roma: "unndoukai" },
-  { japanese: "しゅうがくりょこう", roma: "syuugakuryokou" },
-  { japanese: "なつやすみ", roma: "natuyasumi" },
-  { japanese: "ふゆやすみ", roma: "fuyuyasumi" },
-  { japanese: "クリスマス", roma: "kurisumasu" },
-  { japanese: "お正月", roma: "osougatatu" },
-  { japanese: "たんじょうび", roma: "tanjyoubi" },
-  { japanese: "プレゼント", roma: "purezentou" },
-  { japanese: "しんかんせん", roma: "sinnkannsenn" },
-  { japanese: "ひこうき", roma: "hikouki" },
-  { japanese: "じてんしゃ", roma: "jitensya" },
-  { japanese: "パトカー", roma: "patoka-" },
-  { japanese: "きゅうきゅうしゃ", roma: "kyuukyuusya" },
-  { japanese: "しょうぼうしゃ", roma: "syoubousya" },
-  { japanese: "宇宙飛行士", roma: "utyuuhikousi" },
-  { japanese: "プログラマー", roma: "purogurama-" },
-  { japanese: "サッカーボール", roma: "sakka-bo-ru" },
-  { japanese: "バスケット", roma: "basuketto" },
-  { japanese: "バレーボール", roma: "bare-bo-ru" },
-  { japanese: "すいえい教室", roma: "suieikyousitu" },
-  { japanese: "マラソン大会", roma: "marasontaikai" },
-  { japanese: "金メダル", roma: "kinmedaru" },
-  { japanese: "銀メダル", roma: "ginmedaru" },
-  { japanese: "銅メダル", roma: "doumedaru" },
-  { japanese: "富士山登頂", roma: "fujisannotou" },
-  { japanese: "桜の花びら", roma: "sakuranohanabi" },
-  { japanese: "ひまわり畑", roma: "himawaribatake" },
-  { japanese: "紅葉狩り", roma: "momijigari" },
-  { japanese: "雪だるま", roma: "yukidaruma" },
-  { japanese: "流れ星", roma: "nagarebosi" },
-  { japanese: "天の川", roma: "amanogawa" },
-  { japanese: "ブラックホール", roma: "burakkuho-ru" },
-  { japanese: "タイムマシン", roma: "taimumasinn" },
-  { japanese: "人工知能", roma: "jinni intelligence" },
-  { japanese: "仮想現実", roma: "kasougennjitu" },
-  { japanese: "サイバー攻撃", roma: "saiba-kougeki" },
-  { japanese: "パスワード設定", roma: "pasuwa-dosettei" },
-  { japanese: "ログイン成功", roma: "roguinseikou" },
-  { japanese: "検索エンジン", roma: "kennsakuennjinn" },
-  { japanese: "動画配信", roma: "dougahaisinn" },
-  { japanese: "SNS投稿", roma: "snstoukou" },
-  { japanese: "オンライン授業", roma: "onrainnjugyou" },
-  { japanese: "電子マネー", roma: "dennsimane-" },
-  { japanese: "キャッシュレス", roma: "kyasshyuresu" },
-  { japanese: "自動販売機", roma: "jidouhnnbaiki" },
-  { japanese: "コンビニ弁当", roma: "konnbinibennntou" },
-  { japanese: "ファミリーレストラン", roma: "famiresu" },
-  { japanese: "ファーストフード", roma: "fa-sutofu-do" },
-  { japanese: "ドリンクバー", roma: "dorinnkuba-" },
-  { japanese: "フライドポテト", roma: "furaidopoteto" },
-  { japanese: "アイスクリーム", roma: "aisukuri-mu" },
-  { japanese: "ホットケーキ", roma: "hottoke-ki" },
-  { japanese: "ショートケーキ", roma: "syo-toke-ki" },
+  // 【ふつう：7〜13文字相当】
+  { japanese: "部屋が汚い", kana: "へやがきたない" },
+  { japanese: "青木中学校", kana: "あおきちゅうがっこう" },
+  { japanese: "りんごあめ", kana: "りんごあめ" },
+  { japanese: "カレーライス", kana: "かれーらいす" },
+  { japanese: "おこのみやき", kana: "おこのみやき" },
+  { japanese: "チョコレート", kana: "ちょこれーと" },
+  { japanese: "スマホゲーム", kana: "すまほげーむ" },
+  { japanese: "けしごむ", kana: "けしごむ" },
+  { japanese: "しんかんせん", kana: "しんかんせん" },
+  { japanese: "ひこうき", kana: "ひこうき" },
+  { japanese: "じてんしゃ", kana: "じてんしゃ" },
+  { japanese: "きゅうきゅうしゃ", kana: "きゅうきゅうしゃ" },
+  { japanese: "しょうぼうしゃ", kana: "しょうぼうしゃ" },
+  { japanese: "富士山登頂", kana: "ふじさんとうちょう" },
+  { japanese: "雪だるま", kana: "ゆきだるま" },
 
-  // 【むずかしい：14文字以上】
-  { japanese: "トイレに行きたいです", roma: "toireniikitaidesu" },
-  { japanese: "人間はゴリラの仲間", roma: "ninngennhagoriranonakama" },
-  { japanese: "超高性能コンピューター", roma: "tyoukouseinoukonnpyu-ta-" },
-  { japanese: "キーボードタイピング", roma: "ki-bo-dotaipinngu" },
-  { japanese: "プログラミング教室", roma: "puroguraminngukyoushitu" },
-  { japanese: "ここから先は通さない", roma: "kokokarasakihatoosanai" },
-  { japanese: "休みの日にゲームし放題", roma: "yasuminohinige-mushihoudai" },
-  { japanese: "明日の天気は晴れのち雨", roma: "asitatenukihaharenotiame" },
-  { japanese: "宿題が終わらない夜", roma: "syukudaigaowaranaiyoru" },
-  { japanese: "早起きは三文の徳", roma: "hasaokihasannmonnnotoku" },
-  { japanese: "急がば回れの精神", roma: "isogabamawarunoseisinn" },
-  { japanese: "塵も積もれば山となる", roma: "tirimotumorebayamatonaru" },
-  { japanese: "犬も歩けば棒に当たる", roma: "inumowarukebabouniataru" },
-  { japanese: "猿も木から落ちる", roma: "sarumokikaraotiru" },
-  { japanese: "百聞は一見に如かず", roma: "hyakubunnhaikkennnijikazu" },
-  { japanese: "棚からぼたもち", roma: "tanakarabotamotii" },
-  { japanese: "笑う門には福来る", roma: "waraukadonihahukukitaru" },
-  { japanese: "一石二鳥をねらう", roma: "issekinityouwonerau" },
-  { japanese: "三日坊主で終わる", roma: "mikkabouzudeowaru" },
-  { japanese: "十人十色の考え方", roma: "juuninntoirokaanggata" },
-  { japanese: "東京スカイツリータワー", roma: "toukyousukaituri-tawa-" },
-  { japanese: "都道府県覚えるテスト", roma: "todoufukennoboerutesuto" },
-  { japanese: "夏休みの自由研究", roma: "natuyasuminojiyuukennkyuu" },
-  { japanese: "読書感想文を書く", roma: "dokusokannsoubunnowakaku" },
-  { japanese: "定期テストの勉強", roma: "teikitesutonobenukyou" },
-  { japanese: "部活動の厳しい練習", roma: "bukatudounokibisiirennsyuu" },
-  { japanese: "文化祭の準備作業", roma: "bunkasainojyunnbisagyou" },
-  { japanese: "体育祭のリレー選手", roma: "taiikusainorire-sennsyu" },
-  { japanese: "合唱コンクールの練習", roma: "gasshyoukonnku-runorennsyuu" },
-  { japanese: "卒業式の涙のお別れ", roma: "sotugyousikinonamidanowakare" },
-  { japanese: "入学式の新しい制服", roma: "nyuugakusikinoatarasiiseihuku" },
-  { japanese: "スマートフォン中毒", roma: "suma-tofonntyundoku" },
-  { japanese: "ワイヤレスイヤホン紛失", roma: "waiyaresuiyahonnfunnsitu" },
-  { japanese: "バッテリー残量不足", roma: "batteri-zanuryoubusoku" },
-  { japanese: "インターネット接続エラー", roma: "innnta-nettosetuzokuera-" },
-  { japanese: "セキュリティ対策万全", roma: "sekurititaisakubannzenn" },
-  { japanese: "人工知能の急速な進化", roma: "jinnkoutinounokyousokunasinnka" },
-  { japanese: "宇宙ステーション滞在", roma: "utyuuste-syonntaizai" },
-  { japanese: "自動運転自動車の開発", roma: "jidouunntennjidousyanokaihatu" },
-  { japanese: "再生可能エネルギー", roma: "saiseikanouenerugi-" },
-  { japanese: "地球温暖化の対策", roma: "tikyuuonndankanotaisaku" },
-  { japanese: "リサイクル活動に参加", roma: "risaikurukatudounisannka" },
-  { japanese: "食品ロスを減らす取組", roma: "syokuhinnrosuwoherasutorikumi" },
-  { japanese: "ボランティア活動推進", roma: "boranntiakatudousuisinn" },
-  { japanese: "国際社会の平和と安全", roma: "kokusaisakainoheiwatoannzenn" },
-  { japanese: "世界遺産めぐりの旅", roma: "sekaiisannmegurinotabi" },
-  { japanese: "ファーストクラスの旅", roma: "fa-sutokurasunotabi" },
-  { japanese: "高級ホテルに宿泊する", roma: "koukyuuhoterunisukuhakusuru" },
-  { japanese: "絶叫マシンに乗る", roma: "zekkyoumasinnninoru" },
-  { japanese: "テーマパークのアトラクション", roma: "te-mapa-kunoatorakusyonn" },
-  { japanese: "お化け屋敷で大叫び", roma: "obakeyasikidedaioosawagi" },
-  { japanese: "観覧車からの景色", roma: "kannrannsyakaranokesiki" },
-  { japanese: "メリーゴーラウンド", roma: "meri-go-raunndo" },
-  { japanese: "ポップコーンバケット", roma: "poppuko-nbaketto" },
-  { japanese: "限定グッズの販売", roma: "gennteigguzzunohannbai" },
-  { japanese: "長蛇の列に並ぶ覚悟", roma: "tyoudanoretsuninarabukakugo" },
-  { japanese: "整理券を確保する", roma: "seirikennwokakuhosuru" },
-  { japanese: "前売りチケット購入", roma: "maeuritikettokounyuu" },
-  { japanese: "特別優先乗車券", roma: "tokubetuyuusennjyousyakenn" },
-  { japanese: "満員電車に揺られる", roma: "maninndennsyaniyorareru" },
-  { japanese: "終電を逃してしまう", roma: "syuudennwonogasitesimau" },
-  { japanese: "タクシーを呼び出す", roma: "takusi-woyobidasu" },
-  { japanese: "交通系ICカードチャージ", roma: "koutuukeiic-docha-ji" },
-  { japanese: "自動改札機を通過", roma: "jidoukaisatukiwotyuuka" },
-  { japanese: "指定席を予約する", roma: "siteisekikowoyoyakusuru" },
-  { japanese: "グリーン車の高級感", roma: "guri-nnshyanokoukyuukann" },
-  { japanese: "車内販売のカチカチアイス", roma: "syanaihannbainokatikatiaisu" },
-  { japanese: "駅弁を食べながら旅行", roma: "ekibennwotabenagararyokou" },
-  { japanese: "車窓からの美しい風景", roma: "shyasoukaranoutusikiihuukei" }
+  // 【むずかしい：14文字以上相当】
+  { japanese: "トイレに行きたいです", kana: "といれにいきたいです" },
+  { japanese: "人間はゴリラの仲間", kana: "にんげんはごりらのなかま" },
+  { japanese: "超高性能コンピューター", kana: "ちょうこうせいのうこんぴゅーたー" },
+  { japanese: "キーボードタイピング", kana: "きーぼーどたいぴんぐ" },
+  { japanese: "プログラミング教室", kana: "ぷろぐらみんぐきょうしつ" },
+  { japanese: "ここから先は通さない", kana: "ここからさきはとおさない" },
+  { japanese: "休みの日にゲームし放題", kana: "やすみのひにげーむしほうだい" },
+  { japanese: "早起きは三文の徳", kana: "はやおきはさんもんのとく" },
+  { japanese: "急がば回れの精神", kana: "いそがばまわれのせいしん" },
+  { japanese: "東京スカイツリータワー", kana: "とうきょうすかいつりーたわー" }
 ];
 
-// ▼ ゲームの設定
+// 補完用のローマ字辞書マップ
+const ROMA_MAP = {
+  "あ":["a"],"い":["i"],"う":["u","wu"],"え":["e"],"お":["o"],
+  "か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],
+  "さ":["sa"],"し":["si","shi","ci"],"す":["su"],"せ":["se"],"そ":["so"],
+  "た":["ta"],"ち":["ti","chi"],"つ":["tu","tsu"],"て":["te"],"と":["to"],
+  "な":["na"],"に":["ni"],"ぬ":["nu"],"ね":["ne"],"の":["no"],
+  "は":["ha"],"ひ":["hi"],"ふ":["fu","hu"],"へ":["he"],"ほ":["ho"],
+  "ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],
+  "や":["ya"],"ゆ":["yu"],"よ":["yo"],
+  "ら":["ra"],"り":["ri"],"る":["ru"],"れ":["re"],"ろ":["ro"],
+  "わ":["wa"],"ゐ":["wi"],"ゑ":["we"],"を":["wo"],"ん":["nn","n","n'"],
+  "が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],
+  "ざ":["za"],"じ":["ji","zi"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],
+  "だ":["da"],"ぢ":["di"],"づ":["du"],"で":["de"],"ど":["do"],
+  "ば":["ba"],"び":["bi"],"ぶ":["bu"],"べ":["be"],"ぼ":["bo"],
+  "ぱ":["pa"],"ぴ":["pi"],"ぷ":["pu"],"ぺ":["pe"],"ぽ":["po"],
+  "きゃ":["kya"],"きぃ":["kyi"],"きゅ":["kyu"],"きぇ":["kye"],"きょ":["kyo"],
+  "しゃ":["sya","sha"],"しぃ":["syi"],"しゅ":["syu","shu"],"しぇ":["sye","she"],"しょ":["syo","sho"],
+  "ちゃ":["tya","cha"],"ちぃ":["tyi"],"ちゅ":["tyu","chu"],"ちぇ":["tye","che"],"ちょ":["tyo","cho"],
+  "にゃ":["nya"],"にぃ":["nyi"],"にゅ":["nyu"],"にぇ":["nye"],"にょ":["nyo"],
+  "ひゃ":["hya"],"ひぃ":["hyi"],"ひゅ":["hyu"],"ひぇ":["hye"],"ひょ":["hyo"],
+  "みゃ":["mya"],"みぃ":["myi"],"みゅ":["myu"],"みぇ":["mye"],"みょ":["myo"],
+  "りゃ":["rya"],"りぃ":["ryi"],"りゅ":["ryu"],"りぇ":["rye"],"りょ":["ryo"],
+  "ぎゃ":["gya"],"ぎぃ":["gyi"],"ぎゅ":["gyu"],"ぎぇ":["gye"],"ぎょ":["gyo"],
+  "じゃ":["ja","zya"],"じぃ":["jyi","zyi"],"じゅ":["ju","zyu"],"じぇ":["je","zye"],"じょ":["jo","zyo"],
+  "ぢゃ":["dya"],"ぢぃ":["dyi"],"ぢゅ":["dyu"],"ぢぇ":["dye"],"ぢょ":["dyo"],
+  "びゃ":["bya"],"びぃ":["byi"],"びゅ":["byu"],"びぇ":["bye"],"びょ":["byo"],
+  "ぴゃ":["pya"],"ぴぃ":["pyi"],"ぴゅ":["pyu"],"ぴぇ":["pye"],"ぴょ":["pyo"],
+  "てぃ":["thi","texi","teli","txi"],"てゅ":["thu","texyu","telyu"],
+  "でぃ":["dhi","dexi","deli","dxi"],"でゅ":["dhu","dexyu","delyu"],
+  "とぅ":["twu","toi","toxu","tolu"],"どぅ":["dwu","doi","doxu","dolu"],
+  "ふぁ":["fa","fuxa","fula"],"ふぃ":["fi","fuxi","fuli"],"ふぇ":["fe","fuxe","fule"],"ふぉ":["fo","fuxo","fulo"],
+  "うぃ":["wi","uxi","uli"],"うぇ":["we","uxe","ule"],"うぉ":["who","uxo","ulo"],
+  "くぁ":["kwa","kuxa"],"ぐぁ":["gwa","guxa"],
+  "ぁ":["xa","la"],"ぃ":["xi","li"],"ぅ":["xu","lu"],"ぇ":["xe","le"],"ぉ":["xo","lo"],
+  "っ":["ltu","xtu","tsu"],"ー":["-"]
+};
+
+// ==========================================
+// 2. 柔軟入力判定クラス (Romaji State Machine)
+// ==========================================
+class FlexibleTypingEngine {
+  constructor(kana) {
+    this.kana = kana;
+    this.kanaIndex = 0;
+    this.typedBuffer = ""; // 現在のひら単体に対してタイプ中の文字列
+    this.displayRomaDone = "";
+    this.displayRomaRest = "";
+    this.updateTarget();
+  }
+
+  updateTarget() {
+    if (this.isComplete()) {
+      this.displayRomaRest = "";
+      return;
+    }
+
+    const restKana = this.kana.slice(this.kanaIndex);
+    this.patterns = this.getPatternsAt(restKana);
+    // 表示用のデフォルトローマ字（最初のパターン）を設定
+    this.displayRomaRest = this.patterns[0].romaji.slice(this.typedBuffer.length);
+  }
+
+  getPatternsAt(restKana) {
+    let patterns = [];
+
+    // っ（促音）の特別判定
+    if (restKana.startsWith("っ") && restKana.length > 1) {
+      const nextKanaRest = restKana.slice(1);
+      const nextPatterns = this.getPatternsAt(nextKanaRest);
+      for (let np of nextPatterns) {
+        const firstChar = np.romaji[0];
+        if (firstChar && !"aeiounn".includes(firstChar)) {
+          patterns.push({
+            romaji: firstChar,
+            kanaLength: 1
+          });
+        }
+      }
+    }
+
+    // 「ん」の特別判定 (後ろが母音・ヤ行以外ならn1回でOK)
+    if (restKana.startsWith("ん")) {
+      const nextChar = restKana[1];
+      const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
+      if (!isNextVowelOrY) {
+        patterns.push({ romaji: "n", kanaLength: 1 });
+      }
+    }
+
+    // 辞書（3文字、2文字、1文字のひらがな組み合わせ）から検索
+    for (let len = 3; len >= 1; len--) {
+      if (restKana.length >= len) {
+        const sub = restKana.slice(0, len);
+        if (ROMA_MAP[sub]) {
+          for (let r of ROMA_MAP[sub]) {
+            patterns.push({ romaji: r, kanaLength: len });
+          }
+        }
+      }
+    }
+
+    return patterns;
+  }
+
+  inputKey(key) {
+    const nextBuffer = this.typedBuffer + key;
+    // 現在の候補の中で入力キーに一致するものがあるか検証
+    let matchedPattern = null;
+
+    for (let p of this.patterns) {
+      if (p.romaji.startsWith(nextBuffer)) {
+        matchedPattern = p;
+        break;
+      }
+    }
+
+    if (matchedPattern) {
+      this.typedBuffer = nextBuffer;
+      this.displayRomaDone += key;
+
+      // 1つのひらがな（またはまとまり）の入力が完了したか
+      if (this.typedBuffer === matchedPattern.romaji) {
+        this.kanaIndex += matchedPattern.kanaLength;
+        this.typedBuffer = "";
+      }
+
+      this.updateTarget();
+      return true; // 正解
+    }
+
+    return false; // ミス
+  }
+
+  isComplete() {
+    return this.kanaIndex >= this.kana.length;
+  }
+}
+
+// ==========================================
+// 3. ゲーム管理変数 & DOM取得
+// ==========================================
 const TIME_LIMIT = 60;
 
-// ▼ HTML 要素取得
 const scoreEl = document.getElementById("score");
 const timeEl = document.getElementById("time");
 const missEl = document.getElementById("miss");
@@ -229,19 +207,18 @@ const typedEl = document.getElementById("typed");
 const inputEl = document.getElementById("input");
 const startBtn = document.getElementById("startBtn");
 const resultEl = document.getElementById("result");
-const difficultyEl = document.getElementById("difficulty"); // 難易度セレクト
+const difficultyEl = document.getElementById("difficulty");
 
-// ▼ ゲームの状態変数
 let score = 0;
 let miss = 0;
 let combo = 0;
 let timeLeft = TIME_LIMIT;
 let currentWord = null;
-let position = 0;
+let engine = null;
 let timerId = null;
 let playing = false;
 let isFever = false;
-let activeWordList = []; // 難易度フィルター後の単語リスト
+let activeWordList = [];
 
 // ==========================================
 // 🎵 サウンドエンジン (Web Audio API)
@@ -367,7 +344,7 @@ function playFeverStartSound() {
 }
 
 // ==========================================
-// 💥 エフェクト処理
+// 💥 演出関数
 // ==========================================
 function triggerEffect(type) {
   if (type === 'correct') {
@@ -399,47 +376,39 @@ function startFeverMode() {
 }
 
 // ==========================================
-// 🎮 難易度判定 & ゲーム処理
+// 🎮 ゲーム進行ロジック
 // ==========================================
-
-// 難易度に基づいて単語リストを作成
 function filterWordsByDifficulty() {
   const diff = difficultyEl ? difficultyEl.value : 'normal';
 
   activeWordList = ALL_WORDS.filter(w => {
-    const len = w.roma.length;
-    if (diff === 'easy') return len <= 6;
-    if (diff === 'normal') return len >= 7 && len <= 13;
-    if (diff === 'hard') return len >= 14;
+    const len = w.kana.length;
+    if (diff === 'easy') return len <= 4;
+    if (diff === 'normal') return len >= 5 && len <= 10;
+    if (diff === 'hard') return len >= 11;
     return true;
   });
 
-  // 万が一条件に合う単語がない場合のフォールバック
-  if (activeWordList.length === 0) {
-    activeWordList = ALL_WORDS;
-  }
+  if (activeWordList.length === 0) activeWordList = ALL_WORDS;
 }
 
 function nextWord() {
   const index = Math.floor(Math.random() * activeWordList.length);
   currentWord = activeWordList[index];
-  position = 0;
+  engine = new FlexibleTypingEngine(currentWord.kana);
   renderWord();
 }
 
 function renderWord() {
-  const done = currentWord.roma.slice(0, position);
-  const rest = currentWord.roma.slice(position);
-  
   wordEl.innerHTML = `
     <div class="ja-word">${currentWord.japanese}</div>
-    <div class="roma-word"><span class="done">${done}</span>${rest}</div>
+    <div class="roma-word"><span class="done">${engine.displayRomaDone}</span>${engine.displayRomaRest}</div>
   `;
-  typedEl.textContent = done;
+  typedEl.textContent = engine.displayRomaDone;
 }
 
 function startGame() {
-  filterWordsByDifficulty(); // 難易度ごとのリストを作成
+  filterWordsByDifficulty();
 
   score = 0;
   miss = 0;
@@ -454,7 +423,7 @@ function startGame() {
   timeEl.textContent = timeLeft;
   resultEl.textContent = "";
   startBtn.disabled = true;
-  if (difficultyEl) difficultyEl.disabled = true; // プレイ中は難易度変更不可
+  if (difficultyEl) difficultyEl.disabled = true;
   inputEl.value = "";
   inputEl.focus();
   nextWord();
@@ -489,34 +458,30 @@ function endGame() {
   resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
 }
 
-// キー入力処理
+// キー入力イベント
 document.addEventListener("keydown", (e) => {
   if (!playing) return;
   if (e.key.length !== 1) return;
 
   inputEl.focus();
 
-  const expected = currentWord.roma[position];
-  if (e.key === expected) {
-    position++;
+  const isCorrect = engine.inputKey(e.key.toLowerCase());
+
+  if (isCorrect) {
     combo++;
     renderWord();
-
     triggerEffect('correct');
 
-    if (position === currentWord.roma.length) {
+    if (engine.isComplete()) {
       playWordClearSound();
       triggerEffect('word-complete');
-
       score += (timeLeft <= 20) ? 20 : 10;
-      
       scoreEl.textContent = score;
       inputEl.value = "";
       nextWord();
     } else {
       playComboTypeSound();
     }
-
   } else {
     combo = 0;
     miss++;
