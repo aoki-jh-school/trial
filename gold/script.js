@@ -87,6 +87,8 @@ function endGame() {
   wordEl.textContent = "おつかれさま！";
   typedEl.textContent = "";
   resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
+ labelEl.textContent = ""; 
+
 }
 
 // ▼ キーが押されたときの処理
