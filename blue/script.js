@@ -11,7 +11,7 @@ const words = [
 ];
 
 // ▼ ゲームの設定
-const TIME_LIMIT = 30; // 制限時間（秒）
+const TIME_LIMIT = 60; // 制限時間（秒）
 
 // ▼ HTML の要素を取得
 const scoreEl = document.getElementById("score");
