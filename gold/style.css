@@ -113,3 +113,8 @@ h1 { font-size: 1.8rem; margin-bottom: 24px; }
 
 .back { margin-top: 16px; font-size: 0.9rem; }
 .back a { color: #fff; }
+/* 「miss」という文字だけを赤くする */
+#label {
+  color: #ff5252;
+  font-weight: bold;
+}
