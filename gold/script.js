@@ -241,6 +241,7 @@ document.addEventListener("keydown", (e) => {
       // 1単語すべて打てた
     
     }
+    
 
 if (timeLeft <= 20) {
 score += 20;
@@ -257,7 +258,7 @@ score += 10;
     miss++;
     missEl.textContent = miss;
     labelEl.textContent = "miss";
-    scoreEl.textContent = score;
+   
   }
    document.body.classList.add("miss-flash");
   setTimeout(() => {
