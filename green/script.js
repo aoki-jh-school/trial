@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス（んの動作完全修正版）
+// 2. 柔軟入力判定クラス（表示不具合完全修正版）
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -111,15 +111,16 @@ class FlexibleTypingEngine {
     let restKana = this.kana.slice(this.kanaIndex);
     let restRoma = "";
 
+    // 「ん」の1打目（n）が入力済みのとき
     if (this.pendingN) {
-      restRoma += "n";
-      restKana = restKana.slice(1);
+      restKana = restKana.slice(1); // 「ん」の分を進める
     } else if (this.patterns && this.patterns.length > 0) {
       const currentPattern = this.patterns[0];
       restRoma += currentPattern.romaji.slice(this.typedBuffer.length);
       restKana = restKana.slice(currentPattern.kanaLength);
     }
 
+    // 残りのひらがなをローマ字に変換してつなげる
     while (restKana.length > 0) {
       let patterns = this.getPatternsAt(restKana);
       if (patterns.length > 0) {
@@ -166,10 +167,10 @@ class FlexibleTypingEngine {
   inputKey(key) {
     const restKana = this.kana.slice(this.kanaIndex);
 
-    // 「ん」の1打目（n）がすでに入力されている状態での判定
+    // 「ん」の1打目（n）が押されている状態での処理
     if (this.pendingN) {
       if (key === 'n') {
-        // 2打目の n が来たら 「ん (nn)」 として確定（次の文字には波及させない）
+        // 2打目の n が押された ➔ 「ん」完了！
         this.pendingN = false;
         this.kanaIndex += 1;
         this.typedBuffer = "";
@@ -177,17 +178,17 @@ class FlexibleTypingEngine {
         this.updateDisplay();
         return true;
       } else {
-        // n 以外のキーが来た場合
+        // n 以外のキーが押された
         const nextChar = restKana[1];
         const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
 
         if (!isNextVowelOrY) {
-          // 母音・ヤ行以外なら n 1回打ちで「ん」を完了し、そのまま押されたキーで次の文字を判定
+          // 母音・ヤ行以外なら n 1回で「ん」を完了させ、入力キーを次の文字へ回す
           this.pendingN = false;
           this.kanaIndex += 1;
           this.typedBuffer = "";
         } else {
-          // 母音・ヤ行の前なら n1回＋別キーはミス
+          // 母音・ヤ行の前での n 1打＋別キーはミス
           this.pendingN = false;
           return false;
         }
