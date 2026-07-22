@@ -39,11 +39,8 @@ function nextWord() {
   position = 0;
   renderWord();
 }
-// ② ピンポン（正解）：高い音を2つ「ピン・ポーン」
- function playCorrect() {
-  _tone(988, 0.12, "sine", 0);      // ピン
-  _tone(1319, 0.25, "sine", 0.12);  // ポーン
-}
+
+
 // ▼ お題を画面に表示する
 function renderWord() {
   const done = currentWord.roma.slice(0, position);
@@ -96,7 +93,7 @@ document.addEventListener("keydown", (e) => {
   if (!playing) return;
   if (e.key.length !== 1) return;
 
-  // 誤動作を防ぐために隠しフォームにフォーカス
+  //
   inputEl.focus();
 
   const expected = currentWord.roma[position];
