@@ -1,5 +1,5 @@
 const words = [
-  { japanese: "トイレ行きたいです", roma: "toireniikitaidesu" },
+  { japanese: "トイレに行きたいです", roma: "toireniikitaidesu" },
   { japanese: "部屋が汚い", roma: "heyagakitanai" },
   { japanese: "人間はゴリラの仲間", roma: "ninngennhagoriranonakama" },
   { japanese: "超高性能コンピューター", roma: "tyoukouseinoukonnpyu-ta-" },
@@ -101,7 +101,11 @@ document.addEventListener("keydown", (e) => {
     position++;
     renderWord();
     if (position === currentWord.roma.length) {
-      score += 10;
+    if (timeLeft <= 20) {
+        score += 20;
+      } else {
+        score += 10;
+      }
       scoreEl.textContent = score;
       inputEl.value = "";
       nextWord();
