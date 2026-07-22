@@ -135,132 +135,56 @@ function playFanfare() {
   _tone(784, 0.5, "square", 0.45); // ソ（のばす）
 }
 
-// ▼ お題になる単語リスト（ここに好きな単語を追加してみよう！）
+// ▼ お題になる単語リスト（日本語・ひらがな・ローマ字の50単語）
 const words = [
-  { ja: "喧嘩両成敗", roma: "kennkaryouseibai" },
-  { ja: "猫に触ったら攻撃された", roma: "nekonisawattarakougekisareta" },
-  { ja: "美味しいご飯を食べる", roma: "oishiigohannwotaberu" },
-  { ja: "私は辰年だ", roma: "watashihatatudoshida" },
-  { ja: "犬の足は四本", roma: "inunoashihayonnhonn" },
-  { ja: "長野県に旅行に行きました", roma: "naganokennniryokouniikimashita" },
-  { ja: "日本の挨拶は複雑です", roma: "nihonnnoaisatuhahukuzatudesu" },
-  { ja: "川の中に石がある", roma: "kawanonakaniishigaaru" },
-  { ja: "バレーボールは楽しい", roma: "bare-bo-ruhatanoshii" },
-  { ja: "トイレで奇妙な体験をする", roma: "toiredekimyounataikennwosuru" },
+  { text: "リンゴ", kana: "りんご", romaji: "ringo" },
+  { text: "バナナ", kana: "ばなな", romaji: "banana" },
+  { text: "ミカン", kana: "みかん", romaji: "mikan" },
+  { text: "ブドウ", kana: "ぶどう", romaji: "budou" },
+  { text: "イチゴ", kana: "いちご", romaji: "ichigo" },
+  { text: "モモ", kana: "もも", romaji: "momo" },
+  { text: "スイカ", kana: "すいか", romaji: "suika" },
+  { text: "メロン", kana: "めろん", romaji: "meron" },
+  { text: "犬", kana: "いぬ", romaji: "inu" },
+  { text: "猫", kana: "ねこ", romaji: "neko" },
+  { text: "鳥", kana: "とり", romaji: "tori" },
+  { text: "魚", kana: "さかな", romaji: "sakana" },
+  { text: "馬", kana: "うま", romaji: "uma" },
+  { text: "牛", kana: "うし", romaji: "ushi" },
+  { text: "豚", kana: "ぶた", romaji: "buta" },
+  { text: "ウサギ", kana: "うさぎ", romaji: "usagi" },
+  { text: "クマ", kana: "くま", romaji: "kuma" },
+  { text: "ライオン", kana: "らいおん", romaji: "raion" },
+  { text: "トラ", kana: "とら", romaji: "tora" },
+  { text: "ゾウ", kana: "ぞう", romaji: "zou" },
+  { text: "サル", kana: "さる", romaji: "saru" },
+  { text: "ペンギン", kana: "ぺんぎん", romaji: "pengin" },
+  { text: "イルカ", kana: "いるか", romaji: "iruka" },
+  { text: "パソコン", kana: "ぱそこん", romaji: "pasokon" },
+  { text: "ゲーム", kana: "げーむ", romaji: "ge-mu" },
+  { text: "学校", kana: "がっこう", romaji: "gakkou" },
+  { text: "先生", kana: "せんせい", romaji: "sensei" },
+  { text: "友達", kana: "ともだち", romaji: "tomodachi" },
+  { text: "本", kana: "ほん", romaji: "hon" },
+  { text: "机", kana: "つくえ", romaji: "tsukue" },
+  { text: "椅子", kana: "いす", romaji: "isu" },
+  { text: "鉛筆", kana: "えんぴつ", romaji: "enpitsu" },
+  { text: "時計", kana: "とけい", romaji: "tokei" },
+  { text: "電車", kana: "でんしゃ", romaji: "densya" },
+  { text: "車", kana: "くるま", romaji: "kuruma" },
+  { text: "飛行機", kana: "ひこうき", romaji: "hikouki" },
+  { text: "船", kana: "ふね", romaji: "fune" },
+  { text: "山", kana: "やま", romaji: "yama" },
+  { text: "川", kana: "かわ", romaji: "kawa" },
+  { text: "海", kana: "うみ", romaji: "umi" },
+  { text: "桜", kana: "さくら", romaji: "sakura" },
+  { text: "雨", kana: "あめ", romaji: "ame" },
+  { text: "雪", kana: "ゆき", romaji: "yuki" },
+  { text: "晴れ", kana: "はれ", romaji: "hare" },
+  { text: "曇り", kana: "くもり", romaji: "kumori" },
+  { text: "日本", kana: "にほん", romaji: "nihon" },
+  { text: "空", kana: "そら", romaji: "sora" },
+  { text: "星", kana: "ほし", romaji: "hoshi" },
+  { text: "月", kana: "つき", romaji: "tsuki" },
+  { text: "花", kana: "はな", romaji: "hana" }
 ];
-
-// ▼ ゲームの設定
-const TIME_LIMIT = 60; // 制限時間（秒）
-
-// ▼ HTML の要素を取得
-const scoreEl = document.getElementById("score");
-const timeEl = document.getElementById("time");
-const missEl = document.getElementById("miss");
-const wordEl = document.getElementById("word");
-const typedEl = document.getElementById("typed");
-const inputEl = document.getElementById("input");
-const startBtn = document.getElementById("startBtn");
-const resultEl = document.getElementById("result");
-const labelEl = document.getElementById("label");
-
-// ▼ ゲームの状態を覚えておく変数
-let score = 0;
-let miss = 0;
-let timeLeft = TIME_LIMIT;
-let currentWord = "";
-let position = 0; // いま何文字目まで打てたか
-let timerId = null;
-let playing = false;
-
-// ▼ 新しいお題を出す
-function nextWord() {
-  const index = Math.floor(Math.random() * words.length);
-  currentWord = words[index];
-  position = 0;
-  renderWord();
-}
-
-// ▼ お題を画面に表示する（打てた文字は色をかえる）
-function renderWord() {
-  const done = currentWord["roma"].slice(0, position);
-  const rest = currentWord["roma"].slice(position);
-  wordEl.innerHTML = `<span class="done">${done}</span>${rest}`;
-  typedEl.textContent = done;
-}
-
-// ▼ ゲームスタート
-function startGame() {
-  score = 0;
-  miss = 0;
-  timeLeft = TIME_LIMIT;
-  playing = true;
-  scoreEl.textContent = score;
-  missEl.textContent = miss;
-  timeEl.textContent = timeLeft;
-  resultEl.textContent = "";
-  startBtn.disabled = true;
-  inputEl.value = "";
-  inputEl.focus();
-  nextWord();
-
-  // 1秒ごとに時間をへらす
-  timerId = setInterval(() => {
-    timeLeft--;
-    timeEl.textContent = timeLeft;
-    if (timeLeft <= 0) {
-      endGame();
-    }
-  }, 1000);
-}
-
-// ▼ ゲーム終了
-function endGame() {
-  playing = false;
-  clearInterval(timerId);
-  startBtn.disabled = false;
-  wordEl.textContent = "おつかれさま！";
-  typedEl.textContent = "";
-  resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
-  labelEl.textContent = "";
-}
-
-// ▼ キーが押されたときの処理
-document.addEventListener("keydown", (e) => {
-  if (!playing) return;
-  // 記号や特殊キーは無視（1文字のキーだけ受け取る）
-  if (e.key.length !== 1) return;
-
-  const expected = currentWord[position];
-  if (e.key === expected) {
-    // 正解！
-    position++;
-    labelEl.textContent = "good";
-    renderWord();
-    if (position === currentWord.length) {
-      // 1単語すべて打てた
-    }
-    if (timeLeft <= 20) {
-      score += 20;
-    } else {
-      score += 10;
-    }
-
-    labelEl.textContent = "正解";
-    scoreEl.textContent = score;
-
-    playCorrect();
-    nextWord();
-  } else {
-    // ミス
-    miss++;
-    missEl.textContent = miss;
-    labelEl.textContent = "miss";
-  }
-  document.body.classList.add("miss-flash");
-  setTimeout(() => {
-    document.body.classList.remove("miss-flash");
-  }, 100); // 0.1秒後に元に戻す
-});
-
-// ▼ スタートボタンを押したらゲーム開始
-startBtn.addEventListener("click", startGame);
