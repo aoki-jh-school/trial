@@ -1,4 +1,4 @@
-/// ==========================================
+// ==========================================
 // 1. お題データベース（ひらがな付き）
 // ==========================================
 const ALL_WORDS = [
@@ -65,7 +65,7 @@ const ROMA_MAP = {
   "ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],
   "や":["ya"],"ゆ":["yu"],"よ":["yo"],
   "ら":["ra"],"り":["ri"],"る":["ru"],"れ":["re"],"ろ":["ro"],
-  "わ":["wa"],"ゐ":["wi"],"ゑ":["we"],"を":["wo"],"ん":["nn","n","n'"],
+  "わ":["wa"],"ゐ":["wi"],"ゑ":["we"],"を":["wo"],"ん":["nn","n"],
   "が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],
   "ざ":["za"],"じ":["ji","zi"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],
   "だ":["da"],"ぢ":["di"],"づ":["du"],"で":["de"],"ど":["do"],
@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. 柔軟入力判定クラス (ん/nn対応改善版)
+// 2. 柔軟入力判定クラス（んの1打/2打 完全両立版）
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -103,14 +103,19 @@ class FlexibleTypingEngine {
     this.typedBuffer = "";
     this.displayRomaDone = "";
     this.displayRomaRest = "";
+    this.pendingN = false; // 「ん」の1文字目の n を保持しているフラグ
     this.updateDisplay();
   }
 
   updateDisplay() {
     let restKana = this.kana.slice(this.kanaIndex);
     let restRoma = "";
-    
-    if (this.patterns && this.patterns.length > 0) {
+
+    // 「ん」を n 1回だけで入力中の状態
+    if (this.pendingN) {
+      restRoma += "n";
+      restKana = restKana.slice(1);
+    } else if (this.patterns && this.patterns.length > 0) {
       const currentPattern = this.patterns[0];
       restRoma += currentPattern.romaji.slice(this.typedBuffer.length);
       restKana = restKana.slice(currentPattern.kanaLength);
@@ -144,25 +149,12 @@ class FlexibleTypingEngine {
       }
     }
 
-    // 「ん」の判定 (文字数の多い "nn" を優先的に登録し、条件次第で "n" も受容)
-    if (restKana.startsWith("ん")) {
-      patterns.push({ romaji: "nn", kanaLength: 1 });
-      
-      const nextChar = restKana[1];
-      const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
-      if (!isNextVowelOrY) {
-        patterns.push({ romaji: "n", kanaLength: 1 });
-      }
-    }
-
     // 辞書マッチング
     for (let len = 3; len >= 1; len--) {
       if (restKana.length >= len) {
         const sub = restKana.slice(0, len);
         if (ROMA_MAP[sub]) {
           for (let r of ROMA_MAP[sub]) {
-            // 「ん」は上記で個別処理済みのため除外
-            if (sub === "ん") continue;
             patterns.push({ romaji: r, kanaLength: len });
           }
         }
@@ -174,7 +166,47 @@ class FlexibleTypingEngine {
 
   inputKey(key) {
     const restKana = this.kana.slice(this.kanaIndex);
-    this.patterns = this.getPatternsAt(restKana);
+
+    // --- 「ん」の n 1打目の後の特別判定 ---
+    if (this.pendingN) {
+      if (key === 'n') {
+        // 2打目の n が来たら 「ん (nn)」 を確定
+        this.pendingN = false;
+        this.kanaIndex += 1;
+        this.typedBuffer = "";
+        this.displayRomaDone += key;
+        this.updateDisplay();
+        return true;
+      } else {
+        // n 以外のキーが来たら「ん (n 1回分)」を確定させ、そのまま次の文字の入力として評価
+        const nextChar = restKana[1];
+        const isNextVowelOrY = nextChar && "あいうえおやゆよ".includes(nextChar);
+
+        // 母音・ヤ行の前でなければ 1打打ち成立
+        if (!isNextVowelOrY) {
+          this.pendingN = false;
+          this.kanaIndex += 1;
+          this.typedBuffer = "";
+          // 判定を次へと進めるため下へ抜ける
+        } else {
+          // 母音・ヤ行の前で n 1回＋別キーはミス
+          this.pendingN = false;
+          return false;
+        }
+      }
+    }
+
+    // --- 通常の判定 ---
+    const currentRestKana = this.kana.slice(this.kanaIndex);
+    this.patterns = this.getPatternsAt(currentRestKana);
+
+    // 「ん」の単体入力開始で n が押された場合
+    if (currentRestKana.startsWith("ん") && this.typedBuffer === "" && key === "n") {
+      this.pendingN = true;
+      this.displayRomaDone += key;
+      this.updateDisplay();
+      return true;
+    }
 
     const nextBuffer = this.typedBuffer + key;
     let matchedPattern = null;
@@ -204,7 +236,7 @@ class FlexibleTypingEngine {
   }
 
   isComplete() {
-    return this.kanaIndex >= this.kana.length;
+    return this.kanaIndex >= this.kana.length && !this.pendingN;
   }
 }
 
