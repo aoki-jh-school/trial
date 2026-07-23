@@ -42,8 +42,8 @@ const resultEl = document.getElementById("result");
 let score = 0;
 let miss = 0;
 let timeLeft = TIME_LIMIT;
-let currentWord = null;
-let position = 0;
+let currentWord = "";
+let position = 0; // いま何文字目まで打てたか
 let timerId = null;
 let playing = false;
 
@@ -55,16 +55,11 @@ function nextWord() {
   renderWord();
 }
 
-
-// ▼ お題を画面に表示する
+// ▼ お題を画面に表示する（打てた文字は色をかえる）
 function renderWord() {
-  const done = currentWord.roma.slice(0, position);
-  const rest = currentWord.roma.slice(position);
-  
-  wordEl.innerHTML = `
-    <div class="ja-word">${currentWord.japanese}</div>
-    <div class="roma-word"><span class="done">${done}</span>${rest}</div>
-  `;
+  const done = currentWord.slice(0, position);
+  const rest = currentWord.slice(position);
+  wordEl.innerHTML = `<span class="done">${done}</span>${rest}`;
   typedEl.textContent = done;
 }
 
@@ -82,15 +77,13 @@ function startGame() {
   inputEl.value = "";
   inputEl.focus();
   nextWord();
-}
-
+｝
   // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
     timeLeft--;
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
-      end
- Game();
+      endGame();
     }
   }, 1000);
 }
@@ -100,35 +93,50 @@ function endGame() {
   playing = false;
   clearInterval(timerId);
   startBtn.disabled = false;
-  wordEl.innerHTML = '<div class="ja-word">おつかれさま！</div>';
+  wordEl.textContent = "おつかれさま！";
   typedEl.textContent = "";
   resultEl.textContent = `スコア: ${score}点／ミス: ${miss}回`;
+  labelEl.textContent = "";
 }
 
 // ▼ キーが押されたときの処理
 document.addEventListener("keydown", (e) => {
   if (!playing) return;
+  // 記号や特殊キーは無視（1文字のキーだけ受け取る）
   if (e.key.length !== 1) return;
 
-  //
-  inputEl.focus();
-
-  const expected = currentWord.roma[position];
+  const expected = currentWord[position];
   if (e.key === expected) {
+    // 正解！
     position++;
+    labelEl.textContent = "good";
     renderWord();
-    if (position === currentWord.roma.length) {
-      score += 10;
+
+    if (position === currentWord.length) {
+      // 1単語すべて打てた
+      if (timeLeft <= 20) {
+        score += 20;
+      } else {
+        score += 10;
+      }
+
+      labelEl.textContent = "正解";
       scoreEl.textContent = score;
-      inputEl.value = "";
+
+      playCorrect();
       nextWord();
     }
   } else {
+    // ミス
     miss++;
     missEl.textContent = miss;
- 
+    labelEl.textContent = "miss";
   }
+  document.body.classList.add("miss-flash");
+  setTimeout(() => {
+    document.body.classList.remove("miss-flash");
+  }, 100); // 0.1秒後に元に戻す
+});
 
 // ▼ スタートボタンを押したらゲーム開始
 startBtn.addEventListener("click", startGame);
-}); 
