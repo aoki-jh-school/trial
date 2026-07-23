@@ -62,7 +62,8 @@ const ROMA_MAP = {
   "くぁ":["kwa","kuxa"],"ぐぁ":["gwa","guxa"],
   "ぁ":["xa","la"],"ぃ":["xi","li"],"ぅ":["xu","lu"],"ぇ":["xe","le"],"ぉ":["xo","lo"],
   "っ":["ltu","xtu","tsu"],"ー":["-"]
-}
+};
+
 
 // ▼ ゲームの設定
 const TIME_LIMIT = 100; // 制限時間（秒）
