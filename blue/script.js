@@ -82,6 +82,7 @@ function startGame() {
   inputEl.value = "";
   inputEl.focus();
   nextWord();
+}
 
   // 1秒ごとに時間をへらす
   timerId = setInterval(() => {
