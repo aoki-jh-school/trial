@@ -1,27 +1,27 @@
 const words = [
-  { japanese: "りんご", roma: "apple" },
-  { japanese: "バナナ", roma: "banana" },
-  { japanese: "オレンジ", roma: "orange" },
-  { japanese: "コンピューター", roma: "computer" },
-  { japanese: "キーボード", roma: "keyboard" },
-  { "japanese": "教科書", "roma": "textbook" },
-  { "japanese": "宿題", "roma": "homework" },
-  { "japanese": "先生", "roma": "teacher" },
-  { "japanese": "友達", "roma": "friend" },
-  { "japanese": "教室", "roma": "classroom" },
-  { "japanese": "コーヒー", "roma": "coffee" },
-  { "japanese": "机", "roma": "desk" },
-  { "japanese": "椅子", "roma": "chair" },
-  { "japanese": "時計", "roma": "clock" },
-  { "japanese": "スープ", "roma": "soup" },
-  { "japanese": "ピザ", "roma": "pizza" },
-  { "japanese": "ライオン", "roma": "lion" },
-  { "japanese": "タイガー", "roma": "tiger" },
-  { "japanese": "カレンダー", "roma": "calendar" },
-  { japanese: "プログラミング", roma: "programming" },
-  { japanese: "タイピング", roma: "typing" },
-  { japanese: "ゲーム", roma: "game" },
-  { japanese: "学校", roma: "school" }
+  { "japanese": "メメントリ", "roma": "mementori" },
+  { "japanese": "はるてぃー", "roma": "haruty-" },
+  { "japanese": "うた", "roma": "uta" },
+  { "japanese": "じおる", "roma": "jioru" },
+  { "japanese": "そろもん", "roma": "soromon" },
+  { "japanese": "あすた", "roma": "asuta" },
+  { "japanese": "つきの", "roma": "tukino" },
+  { "japanese": "ごんざれす", "roma": "gonzaresu" },
+  { "japanese": "ねむろ", "roma": "nemuro" },
+  { "japanese": "青終高校", "roma": "aohasikoukou" },
+  { "japanese": "遊戯部", "roma": "yuugibu" },
+  { "japanese": "部員", "roma": "buin" },
+  { "japanese": "たまアリ", "roma": "tamaari" },
+  { "japanese": "マインクラフト", "roma": "mainkurafuto" },
+  { "japanese": "マイクラ", "roma": "maikura" },
+  { "japanese": "実況者", "roma": "zikkyousya" },
+  { "japanese": "ゲーム実況", "roma": "ge-muzikkyou" },
+  { "japanese": "企画", "roma": "kikaku" },
+  { "japanese": "サブメンバー", "roma": "sabumenba-" },
+  { "japanese": "ユーチューブ", "roma": "yu-tyu-bu" },
+  { "japanese": "チャンネル", "roma": "tyanneru" },
+  { "japanese": "歌ってみた", "roma": "utattemita" },
+  { "japanese": "動画編集", "roma": "dougahensyuu" }
  
 ];
 
@@ -88,7 +88,8 @@ function startGame() {
     timeLeft--;
     timeEl.textContent = timeLeft;
     if (timeLeft <= 0) {
-      endGame();
+      end
+ Game();
     }
   }, 1000);
 }
