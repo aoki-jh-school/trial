@@ -168,3 +168,158 @@ document.addEventListener("keydown", (e) => {
 
 // ▼ スタートボタンを押したらゲーム開始
 startBtn.addEventListener("click", startGame);
+
+// ==========================================
+// 🎵 サウンドエンジン (Web Audio API)
+// ==========================================
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let bgmInterval = null;
+
+const normalBgmNotes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+const feverBgmNotes = [523.25, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51, 1567.98];
+let bgmStep = 0;
+
+function updateBGM() {
+  if (bgmInterval) clearInterval(bgmInterval);
+  if (!playing) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const tempo = isFever ? 60 : 120;
+  const notes = isFever ? feverBgmNotes : normalBgmNotes;
+
+  bgmInterval = setInterval(() => {
+    if (!playing) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    
+    osc.type = isFever ? 'sawtooth' : 'square';
+    const noteIndex = (bgmStep * 3) % notes.length;
+    const freq = notes[noteIndex]; 
+    
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    const vol = isFever ? 0.03 : 0.02;
+    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (tempo / 1000));
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + (tempo / 1000));
+    bgmStep++;
+  }, tempo);
+}
+
+function stopBGM() {
+  if (bgmInterval) {
+    clearInterval(bgmInterval);
+    bgmInterval = null;
+  }
+}
+
+function playComboTypeSound() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = isFever ? 'triangle' : 'sine';
+  const baseFreq = isFever ? 880 : 523.25; 
+  const pitchShift = Math.min(combo, 20) * (isFever ? 50 : 30);
+  const freq = baseFreq + pitchShift;
+  
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(freq * 1.3, audioCtx.currentTime + 0.05);
+  gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+  
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.05);
+}
+
+function playWordClearSound() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const chord = isFever 
+    ? [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98, 2093.00]
+    : [523.25, 659.25, 783.99, 1046.50, 1318.51];
+    
+  chord.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    const delay = i * (isFever ? 0.02 : 0.03);
+    
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + delay + 0.3);
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(audioCtx.currentTime + delay);
+    osc.stop(audioCtx.currentTime + delay + 0.3);
+  });
+}
+
+function playMissSound() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.2);
+  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+  
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.2);
+}
+
+function playFeverStartSound() {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const notes = [440, 554.37, 659.25, 880];
+  notes.forEach((freq) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.4);
+  });
+}
+
+// ==========================================
+// 💥 演出関数
+// ==========================================
+function triggerEffect(type) {
+  if (type === 'correct') {
+    wordEl.classList.remove('pop-anim');
+    void wordEl.offsetWidth;
+    wordEl.classList.add('pop-anim');
+  } else if (type === 'miss') {
+    document.body.classList.remove('shake-anim');
+    void document.body.offsetWidth;
+    document.body.classList.add('shake-anim');
+  } else if (type === 'word-complete') {
+    document.body.classList.remove('fever-flash');
+    void document.body.offsetWidth;
+    document.body.classList.add('fever-flash');
+  }
+}
+
+function startFeverMode() {
+  isFever = true;
+  document.body.classList.add('fever-mode');
+  playFeverStartSound();
+  updateBGM();
+  
+  const feverNotice = document.createElement("div");
+  feverNotice.className = "fever-notice";
+  feverNotice.textContent = "🔥 FEVER TIME! SCORE x2 🔥";
+  document.body.appendChild(feverNotice);
+  setTimeout(() => feverNotice.remove(), 1200);
+}
