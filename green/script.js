@@ -77,7 +77,7 @@ const ROMA_MAP = {
   "にゃ":["nya"],"にぃ":["nyi"],"にゅ":["nyu"],"にぇ":["nye"],"にょ":["nyo"],
   "ひゃ":["hya"],"ひぃ":["hyi"],"ひゅ":["hyu"],"ひぇ":["hye"],"ひょ":["hyo"],
   "みゃ":["mya"],"みぃ":["myi"],"みゅ":["myu"],"みぇ":["mye"],"みょ":["myo"],
-  "りゃ":["rya"],"りぃ":["ryi"],"りゅ":["ryu"],"りぇ":["rye"],"りょ":["ryo"],
+  "りゃ":["rya"],"りぃ":["ryi"],"りゅ":["rye"],"りぇ":["rye"],"りょ":["ryo"],
   "ぎゃ":["gya"],"ぎぃ":["gyi"],"ぎゅ":["gyu"],"ぎぇ":["gye"],"ぎょ":["gyo"],
   "じゃ":["ja","zya"],"じぃ":["jyi","zyi"],"じゅ":["ju","zyu"],"じぇ":["je","zye"],"じょ":["jo","zyo"],
   "ぢゃ":["dya"],"ぢぃ":["dyi"],"ぢゅ":["dyu"],"ぢぇ":["dye"],"ぢょ":["dyo"],
@@ -94,7 +94,7 @@ const ROMA_MAP = {
 };
 
 // ==========================================
-// 2. タイピング判定エンジン (完全修正版)
+// 2. タイピング判定エンジン
 // ==========================================
 class FlexibleTypingEngine {
   constructor(kana) {
@@ -106,14 +106,12 @@ class FlexibleTypingEngine {
     this.updateDisplay();
   }
 
-  // 現在の文字位置における入力候補を取得
   getValidRomajiForCurrentKana() {
     const restKana = this.kana.slice(this.kanaIndex);
     if (!restKana) return [];
 
     let results = [];
 
-    // 1. っ（促音）の判定
     if (restKana.startsWith("っ") && restKana.length > 1) {
       const nextKana = restKana.slice(1);
       const nextPatterns = this.getPatternsForKana(nextKana);
@@ -125,7 +123,6 @@ class FlexibleTypingEngine {
       }
     }
 
-    // 2. 「ん」の特別判定
     if (restKana.startsWith("ん")) {
       results.push({ romaji: "nn", kanaLength: 1 });
 
@@ -136,7 +133,6 @@ class FlexibleTypingEngine {
       }
     }
 
-    // 3. 辞書マッチング
     for (let len = Math.min(3, restKana.length); len >= 1; len--) {
       const sub = restKana.slice(0, len);
       if (ROMA_MAP[sub]) {
@@ -193,19 +189,17 @@ class FlexibleTypingEngine {
 
     let matched = candidates.find(c => c.romaji.startsWith(testBuffer));
 
-    // 「n」入力後に別のキー（例: 's'）が押され、「n」1打で「ん」を確定させる処理
     if (!matched && candidates.some(c => c.romaji === this.typedBuffer)) {
       let exact = candidates.find(c => c.romaji === this.typedBuffer);
       this.kanaIndex += exact.kanaLength;
       this.typedBuffer = "";
-      return this.inputKey(key); // 新しい位置で押されたキーを再評価
+      return this.inputKey(key);
     }
 
     if (matched) {
       this.typedBuffer = testBuffer;
       this.displayRomaDone += key;
 
-      // 「nn」などのより長いパターンが残っている場合は確定を保留
       let hasLongerCandidate = candidates.some(c => 
         c.romaji.startsWith(this.typedBuffer) && c.romaji.length > this.typedBuffer.length
       );
@@ -502,14 +496,22 @@ document.addEventListener("keydown", (e) => {
 
   if (isCorrect) {
     combo++;
+
+    // 🎯 1打成功ごとに加算（通常: 2点 / FEVER時: 4点）
+    score += isFever ? 4 : 2;
+    scoreEl.textContent = score;
+
     renderWord();
     triggerEffect('correct');
 
     if (engine.isComplete()) {
       playWordClearSound();
       triggerEffect('word-complete');
-      score += (timeLeft <= 20) ? 20 : 10;
+      
+      // 🎁 単語クリアボーナス（通常: 10点 / FEVER時: 20点）
+      score += isFever ? 20 : 10;
       scoreEl.textContent = score;
+
       inputEl.value = "";
       nextWord();
     } else {
